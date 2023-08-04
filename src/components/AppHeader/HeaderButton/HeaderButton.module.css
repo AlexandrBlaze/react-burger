@@ -1,0 +1,26 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: var(--common-transition);
+}
+
+.text {
+  color: var(--text-inactive-color);
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.button:hover svg {
+  fill: var(--text-primary-color);
+}
+
+.button:hover .text{
+  color: var(--text-primary-color);
+}

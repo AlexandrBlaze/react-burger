@@ -1,0 +1,47 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 16px;
+}
+
+.item {
+  scroll-snap-align: start;
+}
+
+.scrollContainer {
+  display: flex;
+  flex-direction: column;
+  max-height: 464px;
+  gap: 16px;
+  overflow: auto;
+  flex: 1;
+  scroll-padding-right: 16px;
+  scroll-snap-type: y mandatory;
+}
+.scrollContainer::-webkit-scrollbar {
+  width: 8px;
+  background: #2F2F37;
+  padding: 24px 0;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #8585AD;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 40px 16px;
+}
+
+.total {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.total svg {
+  width: 36px;
+  height: 36px;
+}

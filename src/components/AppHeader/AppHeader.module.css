@@ -1,0 +1,25 @@
+.header {
+  width: 100%;
+  background: var(--background);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+.half {
+  display: flex;
+  align-items: center;
+  width: 34%;
+}
+
+.halfRight {
+  composes: half;
+  justify-content: flex-end;
+}

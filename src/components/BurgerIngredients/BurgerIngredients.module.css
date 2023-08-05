@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ingredients {
+  overflow-y: auto;
+  max-height: 700px;
+}
+
+.ingredients::-webkit-scrollbar {
+  width: 8px;
+  background: #2F2F37;
+  padding: 24px 0;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+  background: #8585AD;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+.section {
+  padding-top: 24px;
+}
+
+.sectionTitle {
+  margin-bottom: 8px;
+}

@@ -15,6 +15,9 @@ function App() {
         try {
             setLoader(true);
             const res = await fetch(api_url);
+            if (!res.ok) {
+                throw new Error("Ошибка в response");
+            }
             const data = await res.json();
             setIngredients(data.data);
             setLoader(false)

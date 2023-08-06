@@ -1,24 +1,11 @@
 import React, {useCallback} from "react";
 import ingredientCardStyles from './IngredientCard.module.css'
-import PropTypes from "prop-types";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Modal} from "../../Modal/Modal";
 import {IngredientDetails} from "./modals/IngredientDetails/IngredientDetails";
+import {ingredientItem} from "../../../constants/ingredientItem";
 
-IngredientCard.propTypes = {
-    calories: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    fat: PropTypes.number,
-    image: PropTypes.string,
-    image_large: PropTypes.string,
-    image_mobile: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.number,
-    proteins: PropTypes.number,
-    type: PropTypes.string,
-    _id: PropTypes.string,
-    __v: PropTypes.number,
-}
+IngredientCard.propTypes = ingredientItem;
 export function IngredientCard(props) {
 
     const [modalVisible, setVisible] = React.useState(false)

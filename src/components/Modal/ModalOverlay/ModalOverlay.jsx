@@ -1,8 +1,10 @@
 import modalOverlayStyles from './ModalOverlay.module.css'
-export function ModalOverlay({children}) {
+export function ModalOverlay({onClose}) {
+    function detectOverlayClick(e) {
+        e.nativeEvent.preventDefault()
+        onClose();
+    }
     return (
-        <div className={modalOverlayStyles.overlay}>
-            {children}
-        </div>
+        <div onClick={detectOverlayClick} className={modalOverlayStyles.overlay}></div>
     )
 }

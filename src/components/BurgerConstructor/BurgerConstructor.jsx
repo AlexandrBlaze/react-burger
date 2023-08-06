@@ -2,27 +2,14 @@ import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/
 import burgerConstructorStyles from  './BurgerConstructor.module.css'
 import {INGREDIENTS_TYPES} from "../BurgerIngredients/BurgerIngredients";
 import {Modal} from "../Modal/Modal";
-import React, {useCallback} from "react";
+import React, {useCallback, useMemo} from "react";
 import {OrderDetails} from "./modals/OrderDetails/OrderDetails";
 import PropTypes, {shape} from "prop-types";
+import {ingredientItem} from "../../constants/ingredientItem";
 
-export const constructorItem = {
-    calories: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    fat: PropTypes.number,
-    image: PropTypes.string,
-    image_large: PropTypes.string,
-    image_mobile: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.number,
-    proteins: PropTypes.number,
-    type: PropTypes.string,
-    _id: PropTypes.string,
-    __v: PropTypes.number,
-}
 
 BurgerConstructor.propTypes = {
-    ingredientItems: PropTypes.arrayOf(shape(constructorItem))
+    ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
 }
 
 export function BurgerConstructor({constructorItems}) {
@@ -34,7 +21,11 @@ export function BurgerConstructor({constructorItems}) {
     }, [modalVisible])
 
 
-    const ingredients = constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN)
+
+    const ingredients = useMemo(() => {
+        return  constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN)
+        }, [constructorItems]);
+
     return (
         <section className={burgerConstructorStyles.wrapper}>
             <div className={`${burgerConstructorStyles.item} pl-8 mb-4`}>

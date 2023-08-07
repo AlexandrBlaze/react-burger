@@ -22,17 +22,3 @@
 .ingredients::-webkit-scrollbar-thumb {
   background: #8585AD;
 }
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
-}
-
-.section {
-  padding-top: 24px;
-}
-
-.sectionTitle {
-  margin-bottom: 8px;
-}

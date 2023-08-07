@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 export function HeaderButton({buttonText, children, classes}) {
     return (
-        <button className={`${appHeaderStyles.button} ${classes}`}>
+        <a href="#" className={`${appHeaderStyles.link} ${classes}`}>
             {children}
             <span className={appHeaderStyles.text}>{buttonText}</span>
-        </button>
+        </a>
     )
 }
 

@@ -1,9 +1,10 @@
-import React, {useMemo} from "react";
+import React, {useContext, useMemo} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css"
 import PropTypes, {shape} from "prop-types";
 import {IngredientsSection} from "./IngridientsSection/IngridientsSection";
 import {ingredientItem} from "../../constants/ingredientItem";
+import {IngredientsContext} from "../../contexts/ingredientsContext";
 
 
 export const INGREDIENTS_TYPES = {
@@ -16,10 +17,12 @@ BurgerIngredients.propTypes = {
     ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
 }
 
-export function BurgerIngredients({ingredientItems}) {
+export function BurgerIngredients() {
     const [current, setCurrent] = React.useState('one');
-    // Формируем массив с булками
 
+    const ingredientItems = useContext(IngredientsContext);
+
+    // Формируем массив с булками
     const bunItems = useMemo(() => {
         return  ingredientItems.filter(item => {
             if (item._id === '643d69a5c3f7b9001cfa093c') {

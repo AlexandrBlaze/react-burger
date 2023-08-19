@@ -3,7 +3,7 @@ import modalStyles from './Modal.module.css'
 import {createPortal} from "react-dom";
 import {ModalOverlay} from "./ModalOverlay/ModalOverlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useEffect, useRef} from "react";
+import {useCallback, useEffect} from "react";
 import PropTypes from "prop-types";
 
 
@@ -13,7 +13,7 @@ Modal.propTypes = {
     modalTitle: PropTypes.string,
     toggleModal: PropTypes.func,
 }
-export function Modal({children, modalTitle, toggleModal}){
+export function Modal({ children, modalTitle, toggleModal}){
 
     const detectKeyDown = useCallback(event =>  {
         if (event.key === 'Escape') {

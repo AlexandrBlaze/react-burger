@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 OrderDetails.propTypes = {
     orderData: PropTypes.number,
 }
-export function OrderDetails({orderData}) {
+export function OrderDetails({orderNumber}) {
     return (
         <section className={orderDetailsStyles.info}>
-            <div className={`${orderDetailsStyles.orderNumber} text text_type_digits-large`}>{orderData.orderNumber}</div>
+            <div className={`${orderDetailsStyles.orderNumber} text text_type_digits-large`}>{orderNumber}</div>
             <div className={`${orderDetailsStyles.orderNumberTitle} text text_type_main-medium`}>идентификатор заказа</div>
             <div className={`${orderDetailsStyles.done} text text_type_main-medium`}>
                 <img src={doneImage} alt="done!"/>

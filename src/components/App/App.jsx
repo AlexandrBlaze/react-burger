@@ -5,8 +5,8 @@ import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
 import { BurgerConstructor } from "../BurgerConstructor/BurgerConstructor";
 import {ingredientsReducer} from "../../ingredientsReducer";
 import {IngredientsContext} from "../../contexts/ingredientsContext";
-
-const api_url = 'https://norma.nomoreparties.space/api/ingredients '
+import checkResponse from "../../utils/checkResponse";
+import {BASE_URL} from "../../api_urls/api_urls";
 
 const initialData  = {
     items: [],
@@ -21,16 +21,13 @@ function App() {
     const getIngredientsData = async () => {
         try {
             dataDispatch({type: 'getRequest'});
-            const res = await fetch(api_url);
-            if (!res.ok) {
-                throw new Error("Ошибка в response");
-            }
+            const res = await fetch(`${BASE_URL}/ingredients`);
+            checkResponse(res)
             const {data} = await res.json();
             dataDispatch({
                 type: 'success',
                 payload: data,
             })
-
         } catch (error) {
             dataDispatch({type: 'error'});
         }
@@ -41,23 +38,26 @@ function App() {
     }, [])
 
     return (
-        <main className={appStyles.app}>
+        <>
             <AppHeader />
-            {data.error && <div>Ошибка сервера</div>}
-            {data.loader && <div>загрузка</div>}
-            { (!data.error && !data.loader) &&
-                <IngredientsContext.Provider value={data.items}>
-                    <div className={appStyles.content}>
-                        <div className={appStyles.halfLeft}>
-                            <BurgerIngredients />
+            <main className={appStyles.app}>
+                {data.error && <div>Ошибка сервера</div>}
+                {data.loader && <div>загрузка</div>}
+                { (!data.error && !data.loader) &&
+                    <IngredientsContext.Provider value={data.items}>
+                        <div className={appStyles.content}>
+                            <div className={appStyles.halfLeft}>
+                                <BurgerIngredients />
+                            </div>
+                            <div className={appStyles.halfRight}>
+                                <BurgerConstructor />
+                            </div>
                         </div>
-                        <div className={appStyles.halfRight}>
-                            <BurgerConstructor />
-                        </div>
-                    </div>
-                </IngredientsContext.Provider>
-            }
-        </main>
+                    </IngredientsContext.Provider>
+                }
+            </main>
+        </>
+
     );
 }
 

@@ -7,13 +7,12 @@ import {OrderDetails} from "./modals/OrderDetails/OrderDetails";
 import PropTypes, {func, shape} from "prop-types";
 import {ingredientItem} from "../../constants/ingredientItem";
 import {IngredientsContext} from "../../contexts/ingredientsContext";
+import request from "../../utils/requestHelper";
 
 
 BurgerConstructor.propTypes = {
     ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
 }
-
-const create_order_url = 'https://norma.nomoreparties.space/api/orders';
 
 export function BurgerConstructor() {
 
@@ -21,9 +20,11 @@ export function BurgerConstructor() {
     const [selectedBun, setSelectedBun] = React.useState(null)
     const [ingredients, setIngredients] = React.useState([])
     const [orderParams, setOrderParams] = React.useState({
-        orderNumber: 0,
+        orderNumber: null,
         name: "",
     })
+    const [orderLoader, setOrderLoader] = React.useState(false)
+    const [orderError, setOrderError] = React.useState(false)
 
     const constructorItems = useContext(IngredientsContext);
 
@@ -47,33 +48,34 @@ export function BurgerConstructor() {
     }, [ingredients, selectedBun])
 
 
-    const createOrder = () => {
-        const orderIds = ingredients.map(item => item._id);
+    const createOrder = async () => {
+        try {
+            setOrderLoader(true)
+            const orderIds = ingredients.map(item => item._id);
 
-        fetch(create_order_url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-            body: JSON.stringify({ingredients: orderIds})
-        }).then((res) => {
-            return res.ok ? res : new Error("Ошибка в response");
-        }).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            setOrder(result);
-        }).catch (function (error) {
-            console.log('Request failed', error);
-        });
+            const res = await request('orders', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json; charset=UTF-8',},
+                body: JSON.stringify({
+                    ingredients: orderIds
+                })
+            })
+            const data = await res.json()
+            setOrderParams({orderNumber: data.order.number, name: data.name})
+            setOrderLoader(false)
+
+        } catch (error) {
+            setOrderLoader(false);
+            setOrderError(true);
+            console.log(error)
+        }
     }
 
-    function setOrder(data) {
-        setOrderParams({
-            orderNumber: data.order.number,
-            name: data.name,
-        })
-        toggleModal();
-    }
+    useEffect(() => {
+        if (orderParams.orderNumber) {
+            toggleModal();
+        }
+    }, [orderParams])
 
     return (
         <section className={burgerConstructorStyles.wrapper}>
@@ -124,11 +126,12 @@ export function BurgerConstructor() {
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button onClick={createOrder} htmlType="button" type="primary" size="large">
-                    Оформить заказ
+                    {orderLoader && <span>Загрузка</span>}
+                    {!orderLoader && <span> Оформить заказ</span>}
                 </Button>
                 {modalVisible &&
                     <Modal toggleModal={toggleModal}>
-                       <OrderDetails orderData={orderParams} />
+                       <OrderDetails orderNumber={orderParams.orderNumber} />
                     </Modal>
                 }
             </div>

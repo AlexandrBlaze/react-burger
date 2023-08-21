@@ -1,29 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import { AppHeader } from "../AppHeader/AppHeader";
 import appStyles from './App.module.css';
 import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
 import { BurgerConstructor } from "../BurgerConstructor/BurgerConstructor";
+import {ingredientsReducer} from "../../ingredientsReducer";
+import {IngredientsContext} from "../../contexts/ingredientsContext";
+import checkResponse from "../../utils/checkResponse";
+import {BASE_URL} from "../../api_urls/api_urls";
 
-const api_url = 'https://norma.nomoreparties.space/api/ingredients '
+const initialData  = {
+    items: [],
+    totalPrice: 0,
+    loader: false,
+    error: false,
+};
+
 
 function App() {
-    const [ingredients, setIngredients] = useState([]);
-    const [loader, setLoader] = useState(false);
-    const [error, setError] = useState(false);
-
+    const [data, dataDispatch] = useReducer(ingredientsReducer, initialData);
     const getIngredientsData = async () => {
         try {
-            setLoader(true);
-            const res = await fetch(api_url);
-            if (!res.ok) {
-                throw new Error("Ошибка в response");
-            }
-            const data = await res.json();
-            setIngredients(data.data);
-            setLoader(false)
+            dataDispatch({type: 'getRequest'});
+            const res = await fetch(`${BASE_URL}/ingredients`);
+            checkResponse(res)
+            const {data} = await res.json();
+            dataDispatch({
+                type: 'success',
+                payload: data,
+            })
         } catch (error) {
-            setError(true)
-            setLoader(false)
+            dataDispatch({type: 'error'});
         }
     }
 
@@ -31,23 +37,27 @@ function App() {
         getIngredientsData();
     }, [])
 
-
     return (
-        <main className={appStyles.app}>
+        <>
             <AppHeader />
-            {error && <div>Ошибка сервера</div>}
-            {loader && <div>загрузка</div>}
-            { (!error && !loader) &&
-                <div className={appStyles.content}>
-                    <div className={appStyles.halfLeft}>
-                        <BurgerIngredients ingredientItems={ingredients} />
-                    </div>
-                    <div className={appStyles.halfRight}>
-                        <BurgerConstructor constructorItems={ingredients}/>
-                    </div>
-                </div>
-            }
-        </main>
+            <main className={appStyles.app}>
+                {data.error && <div>Ошибка сервера</div>}
+                {data.loader && <div>загрузка</div>}
+                { (!data.error && !data.loader) &&
+                    <IngredientsContext.Provider value={data.items}>
+                        <div className={appStyles.content}>
+                            <div className={appStyles.halfLeft}>
+                                <BurgerIngredients />
+                            </div>
+                            <div className={appStyles.halfRight}>
+                                <BurgerConstructor />
+                            </div>
+                        </div>
+                    </IngredientsContext.Provider>
+                }
+            </main>
+        </>
+
     );
 }
 

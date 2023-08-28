@@ -4,13 +4,17 @@ import './index.css';
 import "@ya.praktikum/react-developer-burger-ui-components";
 import reportWebVitals from './reportWebVitals';
 import App from "./components/App/App";
+import {Provider} from "react-redux";
+import {store} from "./services/reducers/rootReducer";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
   </React.StrictMode>
 );
 

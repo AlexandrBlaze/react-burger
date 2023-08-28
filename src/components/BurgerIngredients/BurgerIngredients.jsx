@@ -1,17 +1,22 @@
-import React, {forwardRef, useCallback, useContext, useEffect, useMemo} from "react";
+import React, {useCallback, useEffect, useMemo} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css"
 import PropTypes, {shape} from "prop-types";
 import {IngredientsSection} from "./IngridientsSection/IngridientsSection";
 import {ingredientItem} from "../../constants/ingredientItem";
-import {IngredientsContext} from "../../contexts/ingredientsContext";
-import {render} from "react-dom";
+import {useSelector} from "react-redux";
 
 
 export const INGREDIENTS_TYPES = {
     BUN: 'bun',
+    SAUCE: 'sauce',
     MAIN: 'main',
-    SAUCE: 'sauce'
+}
+
+export const INGREDIENTS_NUMBER_TYPES = {
+    0: 'bun',
+    1: 'sauce',
+    2: 'main'
 }
 
 BurgerIngredients.propTypes = {
@@ -21,10 +26,45 @@ BurgerIngredients.propTypes = {
 export function BurgerIngredients() {
     const [tab, setTab] = React.useState(INGREDIENTS_TYPES.BUN);
 
-    const ingredientItems = useContext(IngredientsContext);
+    const ingredientItems = useSelector(store => store.ingredients.ingredientItems);
+
+
+    const scrollContainerRef = React.useRef(null);
     const bunRef = React.useRef();
     const sauceRef = React.useRef();
     const mainRef = React.useRef();
+
+    const sections = [bunRef,sauceRef, mainRef];
+
+
+
+    useEffect(() => {
+        const scroll = scrollContainerRef.current;
+         const handleScroll = () => {
+            const observerCallback = (entries) => {
+                entries.forEach((elem, index) => {
+                    if (elem.isIntersecting) {
+                        setTab(INGREDIENTS_NUMBER_TYPES[index]);
+                    }
+                })
+            }
+
+            const observer = new IntersectionObserver(observerCallback, {
+                threshold: [0.4, 0.6, 1]
+            });
+
+
+            sections.forEach(item => {
+                observer.observe(item.current);
+            })
+        }
+        scroll.addEventListener('scroll', handleScroll)
+        return () => {
+             if (scroll) {
+                 scroll.removeEventListener('scroll', handleScroll)
+             }
+        }
+    }, [])
 
     // Формируем массив с булками
     const bunItems = useMemo(() => {
@@ -47,7 +87,6 @@ export function BurgerIngredients() {
     }, [ingredientItems]);
 
     const scrollIntoSection = useCallback((name) => {
-        console.log(name);
         setTab(name);
         if (name === INGREDIENTS_TYPES.BUN) {
             bunRef.current.scrollIntoView({ behavior: "smooth" });
@@ -58,7 +97,7 @@ export function BurgerIngredients() {
         if (name === INGREDIENTS_TYPES.MAIN) {
             mainRef.current.scrollIntoView({ behavior: "smooth" });
         }
-    }, [setTab, tab]);
+    }, [setTab]);
 
     return (
         <section className={burgerIngredientsStyles.wrapper}>
@@ -80,10 +119,10 @@ export function BurgerIngredients() {
                     Начинки
                 </Tab>
             </nav>
-            <div className={burgerIngredientsStyles.ingredients}>
-                <IngredientsSection ref={bunRef} sectionItems={bunItems} />
-                <IngredientsSection ref={sauceRef} sectionItems={sauceItems} />
-                <IngredientsSection ref={mainRef} sectionItems={mainItems} />
+            <div className={burgerIngredientsStyles.ingredients} ref={scrollContainerRef}>
+                <IngredientsSection ref={bunRef} sectionItems={bunItems} name={'Булки'} />
+                <IngredientsSection ref={sauceRef} sectionItems={sauceItems} name={'Соусы'}/>
+                <IngredientsSection ref={mainRef} sectionItems={mainItems} name={'Начинка'}/>
             </div>
         </section>
     )

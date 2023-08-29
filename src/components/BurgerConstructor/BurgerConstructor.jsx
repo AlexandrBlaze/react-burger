@@ -1,40 +1,46 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from  './BurgerConstructor.module.css'
 import {INGREDIENTS_TYPES} from "../BurgerIngredients/BurgerIngredients";
 import {Modal} from "../Modal/Modal";
-import React, {useCallback, useContext, useEffect, useMemo} from "react";
+import React, {useCallback, useEffect, useMemo} from "react";
 import {OrderDetails} from "./modals/OrderDetails/OrderDetails";
-import PropTypes, {func, shape} from "prop-types";
-import {ingredientItem} from "../../constants/ingredientItem";
-import {IngredientsContext} from "../../contexts/ingredientsContext";
-import request from "../../utils/requestHelper";
-
-
-BurgerConstructor.propTypes = {
-    ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
-}
+import {useDispatch, useSelector} from "react-redux";
+import {getCreateOrder, ORDER_MODAL_CLOSE} from "../../services/actions/createOrderActions";
+import {useDrop} from "react-dnd";
+import {
+    INGREDIENT_BUN_ITEM_ADD,
+    INGREDIENT_ITEM_ADD,
+    removeItem
+} from "../../services/actions/burgerConstructorActions";
+import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
+import {nanoid} from "nanoid";
 
 export function BurgerConstructor() {
 
     const [modalVisible, setVisible] = React.useState(false)
-    const [selectedBun, setSelectedBun] = React.useState(null)
     const [ingredients, setIngredients] = React.useState([])
-    const [orderParams, setOrderParams] = React.useState({
-        orderNumber: null,
-        name: "",
-    })
-    const [orderLoader, setOrderLoader] = React.useState(false)
-    const [orderError, setOrderError] = React.useState(false)
 
-    const constructorItems = useContext(IngredientsContext);
+    const dispatch = useDispatch();
+    const constructorItems = useSelector(store => store.ingredientsConstructor.items);
+    const constructorBun = useSelector(store => store.ingredientsConstructor.bun);
+    const orderData = useSelector(state => state.orderInfo.orderData);
+    const orderLoader = useSelector(state => state.orderInfo.loader)
+    const orderError = useSelector(store => store.orderInfo.error);
 
-    const toggleModal = useCallback(() => {
-        setVisible(!modalVisible)
-    }, [modalVisible])
+    const orderModalVisible = useSelector(state => state.orderInfo.orderModalVisible);
 
+    const createOrder = useCallback(() => {
+        dispatch(getCreateOrder())
+        if (!orderLoader) {
+            setVisible(true);
+        }
+    }, [dispatch, orderLoader])
+
+    const closeModal = () => {
+        setVisible(false);
+    }
 
     useEffect(() => {
-        setSelectedBun(constructorItems.find(item => item._id === '643d69a5c3f7b9001cfa093c'))
         setIngredients(constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN))
     }, [constructorItems])
 
@@ -44,78 +50,70 @@ export function BurgerConstructor() {
         let totalCostIngredients = ingredients.reduce((acc, curr) => {
             return  acc + curr.price
         }, 0);
-        return totalCost = totalCostIngredients + ((selectedBun?.price || 0) * 2);
-    }, [ingredients, selectedBun])
+        return totalCost = totalCostIngredients + ((constructorBun?.price || 0) * 2);
+    }, [ingredients, constructorBun])
 
-
-    const createOrder = async () => {
-        try {
-            setOrderLoader(true)
-            const orderIds = ingredients.map(item => item._id);
-
-            const res = await request('orders', {
-                method: 'POST',
-                headers: {'Content-type': 'application/json; charset=UTF-8',},
-                body: JSON.stringify({
-                    ingredients: orderIds
+    const [, dropTarget] = useDrop({
+        accept: 'ingredients',
+        drop(item) {
+            if (item.type === 'bun') {
+                dispatch({
+                    type: INGREDIENT_BUN_ITEM_ADD,
+                    payload: {...item},
                 })
-            })
-            const data = await res.json()
-            setOrderParams({orderNumber: data.order.number, name: data.name})
-            setOrderLoader(false)
-
-        } catch (error) {
-            setOrderLoader(false);
-            setOrderError(true);
-            console.log(error)
+            } else {
+                dispatch({
+                    type: INGREDIENT_ITEM_ADD,
+                    payload: [...constructorItems, {...item, uniqueId: nanoid()}],
+                })
+            }
         }
+    })
+
+
+    const deleteItem = (index) => {
+        dispatch(removeItem(index));
     }
 
-    useEffect(() => {
-        if (orderParams.orderNumber) {
-            toggleModal();
-        }
-    }, [orderParams])
+    function closeOrderModal() {
+        dispatch({type: ORDER_MODAL_CLOSE})
+    }
 
     return (
-        <section className={burgerConstructorStyles.wrapper}>
-            { selectedBun &&
+        <section className={burgerConstructorStyles.wrapper} ref={dropTarget}>
+            { constructorBun &&
             <div className={`${burgerConstructorStyles.item} pl-8 mb-4`}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
-                    text={selectedBun.name + ' (верх)'}
-                    price={20}
-                    thumbnail={selectedBun.image}
+                    text={constructorBun.name + ' (верх)'}
+                    price={constructorBun.price}
+                    thumbnail={constructorBun.image}
                 />
             </div>
             }
 
             <div className={burgerConstructorStyles.scrollContainer}>
-                {ingredients.map((item) => {
+                {ingredients.map((item, index) => {
                     return (
-                        <div key={item._id} className={burgerConstructorStyles.item}>
-                            <span className="mr-2">
-                                <DragIcon type="primary" />
-                            </span>
-                            <ConstructorElement
-                                text={item.name}
-                                price={item.price}
-                                thumbnail={item.image_mobile}
-                            />
-                        </div>
+                        <React.Fragment key={item.uniqueId} >
+                            <BurgerConstructorItem index={index}
+                                                   item={item}
+                                                   deleteItem={deleteItem}/>
+                        </React.Fragment>
                     )
                 })}
 
             </div>
-            {selectedBun &&
+
+            {constructorBun &&
             <div className={`${burgerConstructorStyles.item} pl-8 mt-4`}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
-                    text={selectedBun.name + ' (низ)'}
-                    price={20}
-                    thumbnail={selectedBun.image}
+                    text={constructorBun.name + ' (низ)'}
+                    price={constructorBun.price}
+                    thumbnail={constructorBun.image}
                 />
             </div>
             }
@@ -127,11 +125,12 @@ export function BurgerConstructor() {
                 </div>
                 <Button onClick={createOrder} htmlType="button" type="primary" size="large">
                     {orderLoader && <span>Загрузка</span>}
-                    {!orderLoader && <span> Оформить заказ</span>}
+                    {orderError && <span>Ошибка</span>}
+                    {(!orderLoader && !orderError) && <span> Оформить заказ</span>}
                 </Button>
-                {modalVisible &&
-                    <Modal toggleModal={toggleModal}>
-                       <OrderDetails orderNumber={orderParams.orderNumber} />
+                {orderModalVisible &&
+                    <Modal toggleModal={closeOrderModal}>
+                        <OrderDetails orderNumber={orderData.orderNumber} />
                     </Modal>
                 }
             </div>

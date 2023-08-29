@@ -13,4 +13,5 @@ export const ingredientItem = {
     type: PropTypes.string,
     _id: PropTypes.string,
     __v: PropTypes.number,
+    uniqueId: PropTypes.number
 }

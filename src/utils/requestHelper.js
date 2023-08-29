@@ -1,4 +1,4 @@
-import {BASE_URL} from "../api_urls/api_urls";
+import {BASE_URL} from "../ApiUlrs/apiUrls";
 import checkResponse from "./checkResponse";
 
 export default function request(url, options) {

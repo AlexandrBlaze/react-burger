@@ -5,9 +5,7 @@
   padding-left: 16px;
 }
 
-.item {
-  scroll-snap-align: start;
-}
+
 
 .scrollContainer {
   display: flex;

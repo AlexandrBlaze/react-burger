@@ -1,4 +1,4 @@
-import {BASE_URL} from "../../api_urls/api_urls";
+import {BASE_URL} from "../../api_urls/apiUrls";
 import checkResponse from "../../utils/checkResponse";
 import request from "../../utils/requestHelper";
 

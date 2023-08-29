@@ -4,11 +4,10 @@ import burgerConstructorItemStyles from './BurgerConstructorItem.module.css';
 import {useDrag, useDrop} from "react-dnd";
 import {moveCard} from "../../../services/actions/burgerConstructorActions";
 import {useDispatch} from "react-redux";
-import {ingredientItem} from "../../../constants/ingredientItem";
 import PropTypes from "prop-types";
 
 BurgerConstructorItem.propTypes = {
-    item: ingredientItem,
+    item: PropTypes.object,
     index: PropTypes.number,
     deleteItem: PropTypes.func,
 }

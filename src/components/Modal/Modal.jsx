@@ -5,21 +5,22 @@ import {ModalOverlay} from "./ModalOverlay/ModalOverlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useCallback, useEffect} from "react";
 import PropTypes from "prop-types";
+import {hideInfoModal} from "../../services/actions/showInfoModalAction";
+import {useDispatch} from "react-redux";
 
 
 const modalRoot = document.getElementById("burger-modals");
 Modal.propTypes = {
     children: PropTypes.element,
     modalTitle: PropTypes.string,
-    toggleModal: PropTypes.func,
 }
 export function Modal({ children, modalTitle, toggleModal}){
 
     const detectKeyDown = useCallback(event =>  {
         if (event.key === 'Escape') {
-            toggleModal();
+            toggleModal()
         }
-    }, [])
+    }, [toggleModal])
 
     useEffect(() => {
         document.addEventListener('keydown', detectKeyDown )

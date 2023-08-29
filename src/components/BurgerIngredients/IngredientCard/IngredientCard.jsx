@@ -1,12 +1,10 @@
 import React, {useCallback, useMemo} from "react";
 import ingredientCardStyles from './IngredientCard.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Modal} from "../../Modal/Modal";
-import {IngredientDetails} from "./modals/IngredientDetails/IngredientDetails";
 import {ingredientItem} from "../../../constants/ingredientItem";
 import {useDispatch, useSelector} from "react-redux";
-import {CLOSE_MODAL, OPEN_MODAL} from "../../../services/actions/showInfoModalAction";
 import {useDrag} from "react-dnd";
+import {showInfoModal} from "../../../services/actions/showInfoModalAction";
 
 IngredientCard.propTypes = ingredientItem;
 
@@ -20,9 +18,6 @@ export function IngredientCard(props) {
         fat: props.fat,
         carbohydrates: props.carbohydrates,
     }
-
-    const modalVisible = useSelector(state => state.modalInfo.modalVisible)
-    const modalData = useSelector( state => state.modalInfo.modalData)
 
     const [{isDrag}, dragRef] = useDrag({
         type: 'ingredients',
@@ -48,14 +43,8 @@ export function IngredientCard(props) {
 
 
     const toggleModal = useCallback(() => {
-        if (modalVisible) {
-            dispatch({type: CLOSE_MODAL})
-        } else {
-            dispatch({type: OPEN_MODAL, payload: modalParams})
-        }
-
-
-    }, [dispatch, modalParams, modalVisible])
+        dispatch(showInfoModal(modalParams))
+    }, [dispatch])
 
     return (
         <> {!isDrag &&
@@ -73,13 +62,7 @@ export function IngredientCard(props) {
                             {props.name}
                         </div>
                     </div>
-
                 </section>
-            }
-            {modalVisible &&
-                <Modal modalTitle={'Детали ингредиента'} toggleModal={toggleModal}>
-                    <IngredientDetails {...modalData}/>
-                </Modal>
             }
         </>
     )

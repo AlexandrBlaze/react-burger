@@ -1,24 +1,24 @@
-import {CLOSE_MODAL, OPEN_MODAL} from "../actions/showInfoModalAction";
+import {CLOSE_INFO_MODAL, OPEN_INFO_MODAL} from "../actions/showInfoModalAction";
 
 
 const defaultState = {
     modalData: null,
-    modalVisible: false,
+    modalInfoVisible: false,
 }
 
 export function showInfoModalReducer(state = defaultState, action) {
     switch (action.type) {
-        case OPEN_MODAL:
+        case OPEN_INFO_MODAL:
             return {
                 ...state,
                 modalData: action.payload,
-                modalVisible: true,
+                modalInfoVisible: true,
             }
-        case CLOSE_MODAL:
+        case CLOSE_INFO_MODAL:
             return {
                 ...state,
                 modalData: null,
-                modalVisible: false,
+                modalInfoVisible: false,
             }
         default:
             return state;

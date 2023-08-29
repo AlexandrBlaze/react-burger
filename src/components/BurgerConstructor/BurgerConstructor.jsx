@@ -1,18 +1,15 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from  './BurgerConstructor.module.css'
 import {INGREDIENTS_TYPES} from "../BurgerIngredients/BurgerIngredients";
 import {Modal} from "../Modal/Modal";
-import React, {useCallback, useEffect, useMemo, useRef} from "react";
+import React, {useCallback, useEffect, useMemo} from "react";
 import {OrderDetails} from "./modals/OrderDetails/OrderDetails";
-import PropTypes, {shape} from "prop-types";
-import {ingredientItem} from "../../constants/ingredientItem";
 import {useDispatch, useSelector} from "react-redux";
-import {getCreateOrder} from "../../services/actions/createOrderActions";
+import {getCreateOrder, ORDER_MODAL_CLOSE} from "../../services/actions/createOrderActions";
 import {useDrop} from "react-dnd";
 import {
     INGREDIENT_BUN_ITEM_ADD,
     INGREDIENT_ITEM_ADD,
-    INGREDIENT_ITEM_REMOVE,
     removeItem
 } from "../../services/actions/burgerConstructorActions";
 import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
@@ -29,6 +26,8 @@ export function BurgerConstructor() {
     const orderData = useSelector(state => state.orderInfo.orderData);
     const orderLoader = useSelector(state => state.orderInfo.loader)
     const orderError = useSelector(store => store.orderInfo.error);
+
+    const orderModalVisible = useSelector(state => state.orderInfo.orderModalVisible);
 
     const createOrder = useCallback(() => {
         dispatch(getCreateOrder())
@@ -74,6 +73,10 @@ export function BurgerConstructor() {
 
     const deleteItem = (index) => {
         dispatch(removeItem(index));
+    }
+
+    function closeOrderModal() {
+        dispatch({type: ORDER_MODAL_CLOSE})
     }
 
     return (
@@ -125,9 +128,9 @@ export function BurgerConstructor() {
                     {orderError && <span>Ошибка</span>}
                     {(!orderLoader && !orderError) && <span> Оформить заказ</span>}
                 </Button>
-                {modalVisible &&
-                    <Modal toggleModal={closeModal}>
-                       <OrderDetails orderNumber={orderData.orderNumber} />
+                {orderModalVisible &&
+                    <Modal toggleModal={closeOrderModal}>
+                        <OrderDetails orderNumber={orderData.orderNumber} />
                     </Modal>
                 }
             </div>

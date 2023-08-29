@@ -7,15 +7,26 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {BurgerConstructor} from "../BurgerConstructor/BurgerConstructor";
 import {BurgerIngredients} from "../BurgerIngredients/BurgerIngredients";
+import {Modal} from "../Modal/Modal";
+import {IngredientDetails} from "../BurgerIngredients/IngredientCard/modals/IngredientDetails/IngredientDetails";
+import {hideInfoModal} from "../../services/actions/showInfoModalAction";
 
 
 function App() {
     const error = useSelector(store =>  store.ingredients.error)
     const loader = useSelector(store => store.ingredients.loader)
+
+    const modalInfoData = useSelector(state => state.modalInfo.modalData);
+    const modalInfoVisible = useSelector(state => state.modalInfo.modalInfoVisible);
+
     const dispatch = useDispatch();
      useEffect( () => {
          dispatch(getIngredientsData());
     }, [dispatch])
+
+    function closeModal() {
+        dispatch(hideInfoModal());
+    }
 
     return (
         <>
@@ -36,6 +47,14 @@ function App() {
                     </div>
                 }
             </main>
+            {modalInfoVisible &&
+                <Modal toggleModal={closeModal} modalTitle={'Детали ингредиента'}>
+                    <IngredientDetails {...modalInfoData}/>
+                </Modal>
+            }
+
+
+
         </>
 
     );

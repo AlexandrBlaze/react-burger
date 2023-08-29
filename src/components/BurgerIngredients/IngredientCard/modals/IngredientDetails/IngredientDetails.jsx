@@ -1,4 +1,15 @@
 import ingredientDetailsStyles from './IngredientDetails.module.css'
+import PropTypes from "prop-types";
+
+
+IngredientDetails.propTypes = {
+    image: PropTypes.string,
+    name: PropTypes.string,
+    calories: PropTypes.number,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+}
 export function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}) {
     return (
         <section className={ingredientDetailsStyles.card}>

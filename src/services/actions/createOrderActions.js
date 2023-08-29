@@ -4,6 +4,7 @@ import checkResponse from "../../utils/checkResponse";
 export const ORDER_GET_REQUEST = 'ORDER_GET_REQUEST'
 export const ORDER_SUCCESS_REQUEST = 'ORDER_SUCCESS_REQUEST'
 export const ORDER_ERROR_REQUEST = 'ORDER_ERROR_REQUEST'
+export const ORDER_MODAL_CLOSE = 'ORDER_MODAL_CLOSE'
 
 
 export const getCreateOrder= () => async (dispatch, getState) => {

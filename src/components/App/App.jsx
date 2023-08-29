@@ -1,23 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import { AppHeader } from "../AppHeader/AppHeader";
 import appStyles from './App.module.css';
-import { BurgerIngredients } from "../BurgerIngredients/BurgerIngredients";
-import { BurgerConstructor } from "../BurgerConstructor/BurgerConstructor";
 import {useDispatch, useSelector} from "react-redux";
 import {getIngredientsData} from "../../services/actions/ingredientsActions";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {BurgerConstructor} from "../BurgerConstructor/BurgerConstructor";
+import {BurgerIngredients} from "../BurgerIngredients/BurgerIngredients";
 
 
 function App() {
-    const { error, loader } = useSelector(store => ({
-        error: store.ingredients.error,
-        loader: store.ingredients.loader
-    }))
+    const error = useSelector(store =>  store.ingredients.error)
+    const loader = useSelector(store => store.ingredients.loader)
     const dispatch = useDispatch();
      useEffect( () => {
          dispatch(getIngredientsData());
-    }, [])
+    }, [dispatch])
 
     return (
         <>

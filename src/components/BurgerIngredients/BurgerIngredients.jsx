@@ -1,9 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css"
-import PropTypes, {shape} from "prop-types";
 import {IngredientsSection} from "./IngridientsSection/IngridientsSection";
-import {ingredientItem} from "../../constants/ingredientItem";
 import {useSelector} from "react-redux";
 
 
@@ -17,10 +15,6 @@ export const INGREDIENTS_NUMBER_TYPES = {
     0: 'bun',
     1: 'sauce',
     2: 'main'
-}
-
-BurgerIngredients.propTypes = {
-    ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
 }
 
 export function BurgerIngredients() {
@@ -64,7 +58,7 @@ export function BurgerIngredients() {
                  scroll.removeEventListener('scroll', handleScroll)
              }
         }
-    }, [])
+    }, [sections])
 
     // Формируем массив с булками
     const bunItems = useMemo(() => {

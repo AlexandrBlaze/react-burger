@@ -18,25 +18,17 @@ import {
 import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
 import {nanoid} from "nanoid";
 
-
-BurgerConstructor.propTypes = {
-    ingredientItems: PropTypes.arrayOf(shape(ingredientItem))
-}
-
 export function BurgerConstructor() {
 
     const [modalVisible, setVisible] = React.useState(false)
-    const [selectedBun, setSelectedBun] = React.useState(null)
     const [ingredients, setIngredients] = React.useState([])
 
     const dispatch = useDispatch();
     const constructorItems = useSelector(store => store.ingredientsConstructor.items);
     const constructorBun = useSelector(store => store.ingredientsConstructor.bun);
-    const { orderData, orderLoader, orderError} = useSelector(store => ({
-        orderData: store.orderInfo.orderData,
-        orderLoader: store.orderInfo.loader,
-        orderError: store.orderInfo.error,
-    }));
+    const orderData = useSelector(state => state.orderInfo.orderData);
+    const orderLoader = useSelector(state => state.orderInfo.loader)
+    const orderError = useSelector(store => store.orderInfo.error);
 
     const createOrder = useCallback(() => {
         dispatch(getCreateOrder())

@@ -6,7 +6,6 @@ import {
 
 const defaultState = {
     ingredientItems: [],
-    constructorItems: [],
     loader: false,
     error: false,
 }

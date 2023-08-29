@@ -9,10 +9,9 @@ import {CLOSE_MODAL, OPEN_MODAL} from "../../../services/actions/showInfoModalAc
 import {useDrag} from "react-dnd";
 
 IngredientCard.propTypes = ingredientItem;
+
 export function IngredientCard(props) {
     const dispatch = useDispatch();
-
-
     const modalParams = {
         image: props.image,
         name: props.name,
@@ -22,10 +21,8 @@ export function IngredientCard(props) {
         carbohydrates: props.carbohydrates,
     }
 
-    const {modalVisible, modalData} = useSelector(state => ({
-        modalVisible: state.modalInfo.modalVisible,
-        modalData: state.modalInfo.modalData,
-    }))
+    const modalVisible = useSelector(state => state.modalInfo.modalVisible)
+    const modalData = useSelector( state => state.modalInfo.modalData)
 
     const [{isDrag}, dragRef] = useDrag({
         type: 'ingredients',
@@ -34,22 +31,18 @@ export function IngredientCard(props) {
             isDrag: monitor.isDragging()
         })
     })
+    const constructorItems = useSelector(state => state.ingredientsConstructor.items)
+    const bunItem = useSelector(state => state.ingredientsConstructor.bun);
 
-    const {constructorItems, bunItem} = useSelector(state => ({
-        constructorItems: state.ingredientsConstructor.items,
-        bunItem: state.ingredientsConstructor.bun,
-    }));
-
-    const getBunCounter = useMemo(() => {
+    const bunCounter = useMemo(() => {
         if (bunItem?._id === props._id) {
             return 2;
         }
-    }, [bunItem])
-    const bunCounter = getBunCounter;
+    }, [bunItem?._id, props._id]);
 
     const getCount = useMemo(() => {
         return constructorItems.filter((element) => element._id === props._id);
-    }, [constructorItems]);
+    }, [constructorItems, props._id]);
 
     const counter = getCount.length;
 
@@ -62,7 +55,7 @@ export function IngredientCard(props) {
         }
 
 
-    }, [modalVisible])
+    }, [dispatch, modalParams, modalVisible])
 
     return (
         <> {!isDrag &&

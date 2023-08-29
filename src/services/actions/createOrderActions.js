@@ -1,4 +1,5 @@
 import request from "../../utils/requestHelper";
+import checkResponse from "../../utils/checkResponse";
 
 export const ORDER_GET_REQUEST = 'ORDER_GET_REQUEST'
 export const ORDER_SUCCESS_REQUEST = 'ORDER_SUCCESS_REQUEST'
@@ -17,7 +18,7 @@ export const getCreateOrder= () => async (dispatch, getState) => {
                 ingredients: orderIds
             })
         })
-        const data = await res.json()
+        const data = await res;
         dispatch({
             type: ORDER_SUCCESS_REQUEST,
             payload: {orderNumber: data.order.number, name: data.name},

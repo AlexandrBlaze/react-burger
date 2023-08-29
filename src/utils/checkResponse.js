@@ -1,3 +1,3 @@
 export default function checkResponse(res) {
-    return res.ok ? res : new Error();
+    return res.ok ? res.json() : new Error();
 }

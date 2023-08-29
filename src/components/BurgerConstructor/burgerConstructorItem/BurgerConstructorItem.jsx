@@ -8,7 +8,7 @@ import {ingredientItem} from "../../../constants/ingredientItem";
 import PropTypes from "prop-types";
 
 BurgerConstructorItem.propTypes = {
-    item: PropTypes.objectOf(ingredientItem),
+    item: ingredientItem,
     index: PropTypes.number,
     deleteItem: PropTypes.func,
 }

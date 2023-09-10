@@ -1,13 +1,15 @@
 import {combineReducers} from "redux";
-import {createStore, applyMiddleware, compose} from "redux";
+import {createStore, applyMiddleware} from "redux";
 import ingredientsReducer from "./ingredientsReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {showInfoModalReducer} from "./showInfoModalReducer";
 import createOrderReducer from "./сreateOrderReducer";
 import burgerConstructorReducer from "./burgerConstructorReducer";
+import authReducer from "./authReducer";
 
 const rootReducer= combineReducers({
+    authData: authReducer,
     ingredients: ingredientsReducer,
     modalInfo: showInfoModalReducer,
     orderInfo: createOrderReducer,

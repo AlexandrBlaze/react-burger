@@ -1,17 +1,19 @@
 import appHeaderStyles from "./HeaderButton.module.css";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 
-export function HeaderButton({buttonText, children, classes}) {
+export function HeaderButton({buttonText, children, classes, url = '/'}) {
     return (
-        <a href="#" className={`${appHeaderStyles.link} ${classes}`}>
+        <Link to={url} className={`${appHeaderStyles.link} ${classes}`}>
             {children}
             <span className={appHeaderStyles.text}>{buttonText}</span>
-        </a>
+        </Link>
     )
 }
 
 HeaderButton.propTypes = {
     buttonText: PropTypes.string.isRequired,
     children: PropTypes.element,
-    classes: PropTypes.string
+    classes: PropTypes.string,
+    url: PropTypes.string
 }

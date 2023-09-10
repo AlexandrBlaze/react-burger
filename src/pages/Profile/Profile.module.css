@@ -1,0 +1,44 @@
+.wrapper {
+    width: 100%;
+    padding-top: 120px;
+}
+
+.inner {
+    display: flex;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 320px;
+    margin-right: 60px;
+}
+
+.nav {
+    margin: 0 0 80px 0;
+    padding: 0;
+}
+
+.nav li {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.infoMessage {
+    color: #8585AD;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.buttonWrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}

@@ -1,62 +1,47 @@
-import React, {useEffect} from 'react';
-import { AppHeader } from "../AppHeader/AppHeader";
-import appStyles from './App.module.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import MainPage from "../../pages/MainPage/MainPage";
+import {AppHeader} from "../AppHeader/AppHeader";
+import Login from "../../pages/Login/Login";
+import Register from "../../pages/Register/Register";
+import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "../../pages/ResetPassword/ResetPassword";
+import NotFound404 from "../../pages/NotFound404/NotFound404";
+import Profile from "../../pages/Profile/Profile";
+import Loader from "../Loader/Loader";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getIngredientsData} from "../../services/actions/ingredientsActions";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import {BurgerConstructor} from "../BurgerConstructor/BurgerConstructor";
-import {BurgerIngredients} from "../BurgerIngredients/BurgerIngredients";
-import {Modal} from "../Modal/Modal";
-import {IngredientDetails} from "../BurgerIngredients/IngredientCard/modals/IngredientDetails/IngredientDetails";
-import {hideInfoModal} from "../../services/actions/showInfoModalAction";
+import {checkUserAuth} from "../../services/actions/authActions";
+import * as PropTypes from "prop-types";
+import {OnlyAuth, OnlyUnAuth} from "./protected-route";
 
 
 function App() {
-    const error = useSelector(store =>  store.ingredients.error)
-    const loader = useSelector(store => store.ingredients.loader)
-
-    const modalInfoData = useSelector(state => state.modalInfo.modalData);
-    const modalInfoVisible = useSelector(state => state.modalInfo.modalInfoVisible);
+    const userActionsLoader = useSelector((store) => store.authData.user_actions_loader);
+    console.log(userActionsLoader)
 
     const dispatch = useDispatch();
-     useEffect( () => {
-         dispatch(getIngredientsData());
-    }, [dispatch])
+    const isAuth = useSelector(store => store.authData.is_auth)
+    console.log('Пользователь авторизован', isAuth)
 
-    function closeModal() {
-        dispatch(hideInfoModal());
-    }
-
+    useEffect(() => {
+        dispatch(checkUserAuth());
+    }, []);
     return (
         <>
-            <AppHeader />
-            <main className={appStyles.app}>
-                {error && <div>Ошибка сервера</div>}
-                {loader && <div>загрузка</div>}
-                { (!error && !loader) &&
-                    <div className={appStyles.content}>
-                        <DndProvider backend={HTML5Backend}>
-                            <div className={appStyles.halfLeft}>
-                                <BurgerIngredients />
-                            </div>
-                            <div className={appStyles.halfRight}>
-                                <BurgerConstructor />
-                            </div>
-                        </DndProvider>
-                    </div>
-                }
-            </main>
-            {modalInfoVisible &&
-                <Modal toggleModal={closeModal} modalTitle={'Детали ингредиента'}>
-                    <IngredientDetails {...modalInfoData}/>
-                </Modal>
-            }
-
-
-
+            {userActionsLoader && <Loader/>}
+            <BrowserRouter>
+                <AppHeader/>
+                <Routes>
+                    <Route path="/" element={<MainPage/>}/>
+                    <Route path="/login" element={<OnlyUnAuth component={<Login/>}/>}/>
+                    <Route path="/register" element={<OnlyUnAuth component={<Register/>}/>}/>
+                    <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
+                    <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
+                    <Route path="/profile" element={<OnlyAuth component={<Profile/>} />}/>
+                    <Route path="*" element={<NotFound404/>}/>
+                </Routes>
+            </BrowserRouter>
         </>
-
     );
 }
 

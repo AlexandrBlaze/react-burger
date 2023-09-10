@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    padding-top: 180px;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.link {
+    color: #4C4CFF;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 16px;
+}
+
+.link:hover {
+    color: #7272f6;
+}
+
+.buttonWrap {
+    display: flex;
+    justify-content: center;
+}

@@ -1,6 +1,5 @@
 import request from "../../utils/requestHelper";
 import {BASE_URL} from "../../ApiUlrs/apiUrls";
-import {redirect} from "react-router-dom";
 
 export const AUTH_FETCH_START = 'AUTH_FETCH_START';
 export const SET_USER_DATA = 'SET_USER_DATA';
@@ -81,7 +80,7 @@ export const signIn = (email, password) => async (dispatch) => {
 
 export const checkUserAuth = () => async (dispatch) =>  {
     const storedUser = JSON.parse(localStorage.getItem('tokens'));
-    if (storedUser.refreshToken || storedUser.accessToken) {
+    if (storedUser?.refreshToken || storedUser?.accessToken) {
         dispatch({type: AUTH_FETCH_START});
         const userData = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
             method: 'GET',
@@ -149,23 +148,15 @@ export const fetchWithRefresh = async (url, options) => {
 };
 
 export const updateUserData = (name, email, password) => async (dispatch, getState) => {
-    debugger
-    const params = {
-        name,
-        email
-    }
-    if (password.length) {
-        params.password = password;
-    }
     try {
         dispatch({type: AUTH_FETCH_START});
-        const res = request('auth/user', {
+        const res = await request('auth/user', {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
                 authorization: getState().authData.accessToken,
             },
-            body: JSON.stringify({params})
+            body: JSON.stringify({name, email, password})
         });
         dispatch({type: UPDATE_USER_DATA, payload: res})
         dispatch({type: AUTH_FETCH_COMPLETE})

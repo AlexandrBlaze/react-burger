@@ -8,10 +8,10 @@ export function AppHeader() {
         <header className={appHeaderStyles.header}>
             <div className={appHeaderStyles.headerInner}>
                 <nav className={appHeaderStyles.half}>
-                    <HeaderButton buttonText='Конструктор' classes="mr-2">
+                    <HeaderButton buttonText='Конструктор' classes="mr-2" url={'/'}>
                         <BurgerIcon type="secondary" />
                     </HeaderButton>
-                    <HeaderButton buttonText='Лента заказов'>
+                    <HeaderButton buttonText='Лента заказов' url={'/history'}>
                         <ListIcon type="secondary" />
                     </HeaderButton>
                 </nav>

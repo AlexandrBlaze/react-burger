@@ -25,3 +25,11 @@
 .link:hover .text{
   color: var(--text-primary-color);
 }
+
+.activeLink .text{
+  color: var(--text-primary-color);
+}
+
+.activeLink svg {
+  fill: var(--text-primary-color);
+}

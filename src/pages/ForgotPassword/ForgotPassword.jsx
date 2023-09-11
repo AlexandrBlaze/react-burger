@@ -1,27 +1,35 @@
 import styles from './ForgotPassword.module.css'
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {passwordRecovery} from "../../services/actions/authActions";
 
 
 export default function ForgotPassword() {
-    const [value, setValue] = React.useState('')
-    const [value2, setValue2] = React.useState('')
-    const [value3, setValue3] = React.useState('')
-    const inputRef = React.useRef(null)
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
+    const [value, setValue] = React.useState('');
+    const isResetPassword = useSelector(state => state.authData.isResetPassword)
+    const dispatch = useDispatch();
+    const navigate = useNavigate ();
     const onChange = e => {
-        setValue2(e.target.value)
+        setValue(e.target.value)
+    }
+
+    useEffect(() => {
+        if (isResetPassword) {
+            navigate('/reset-password');
+        }
+    }, [isResetPassword, navigate])
+
+    const fargot = () => {
+        dispatch(passwordRecovery(value))
     }
     return (
         <main className={styles.wrapper}>
             <form className={styles.form}>
                 <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
                 <EmailInput
-                    onChange={() => (console.log('kek'))}
+                    onChange={(e) => onChange(e)}
                     value={value}
                     name={'email'}
                     placeholder={'Укажите e-mail'}
@@ -30,7 +38,7 @@ export default function ForgotPassword() {
                 />
 
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" type="primary" size="medium" extraClass='mb-20'>
+                    <Button htmlType="button" type="primary" size="medium" extraClass='mb-20' onClick={() => fargot()}>
                         Восстановить
                     </Button>
                 </div>

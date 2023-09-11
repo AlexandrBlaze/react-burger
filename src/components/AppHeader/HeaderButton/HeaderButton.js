@@ -1,13 +1,15 @@
 import appHeaderStyles from "./HeaderButton.module.css";
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export function HeaderButton({buttonText, children, classes, url = '/'}) {
+
     return (
-        <Link to={url} className={`${appHeaderStyles.link} ${classes}`}>
+        <NavLink  to={{ pathname: url }}
+                  className={({ isActive }) => `${appHeaderStyles.link} ${isActive ? appHeaderStyles.activeLink : ''}`}>
             {children}
             <span className={appHeaderStyles.text}>{buttonText}</span>
-        </Link>
+        </NavLink>
     )
 }
 

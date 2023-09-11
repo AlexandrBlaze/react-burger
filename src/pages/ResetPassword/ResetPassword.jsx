@@ -1,49 +1,52 @@
 import styles from './ResetPassword.module.css'
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {passwordReset} from "../../services/actions/authActions";
 
 
 export default function ResetPassword() {
-    const [value, setValue] = React.useState('')
-    const [value2, setValue2] = React.useState('')
-    const [value3, setValue3] = React.useState('')
+    const dispatch = useDispatch();
+    const [newPassword, setNewPassword] = React.useState('')
+    const [resetCode, setResetCode] = React.useState('')
     const inputRef = React.useRef(null)
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
-    const onChange = e => {
-        setValue2(e.target.value)
-    }
+    const isResetPassword = useSelector(state => state.authData.isResetPassword)
+    const error = useSelector(state => state.authData.resetFetchHasError)
+
+    const confirmReset = useCallback(() => {
+        if (newPassword.length && resetCode.length) {
+            dispatch(passwordReset(newPassword, resetCode))
+        }
+    },[dispatch, newPassword, resetCode])
+    
     return (
         <main className={styles.wrapper}>
             <form className={styles.form}>
                 <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
                 <PasswordInput
                     placeholder={'Введите новый пароль'}
-                    onChange={onChange}
-                    value={value2}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    value={newPassword}
                     name={'password'}
                     extraClass="mb-6"
                 />
                 <Input
                     type={'text'}
                     placeholder={'Введите код из письма'}
-                    onChange={e => setValue(e.target.value)}
-                    value={value3}
+                    onChange={e => setResetCode(e.target.value)}
+                    value={resetCode}
                     name={'name'}
-                    error={false}
+                    error={error.error}
                     ref={inputRef}
-                    onIconClick={onIconClick}
-                    errorText={'Ошибка'}
                     size={'default'}
+                    errorText={error.message}
                     extraClass="mb-6"
                 />
 
 
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" type="primary" size="medium" extraClass='mb-20'>
+                    <Button htmlType="button" onClick={() => confirmReset()} type="primary" size="medium" extraClass='mb-20'>
                         Сохранить
                     </Button>
                 </div>

@@ -10,6 +10,9 @@ export const USER_IS_NOT_IDENTIFIED = 'USER_IS_NOT_IDENTIFIED';
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
+export const SET_RESET_STATE = 'SET_RESET_STATE';
+export const RESET_FETCH_ERROR = 'RESET_FETCH_ERROR';
+export const RESET_FETCH_COMPLETE = 'RESET_FETCH_COMPLETE';
 
 function saveTokenToLocalStorage(access, refresh) {
     const userTokens = { accessToken: access, refreshToken: refresh };
@@ -160,6 +163,49 @@ export const updateUserData = (name, email, password) => async (dispatch, getSta
         });
         dispatch({type: UPDATE_USER_DATA, payload: res})
         dispatch({type: AUTH_FETCH_COMPLETE})
+    } catch (err) {
+        dispatch({type: AUTH_FETCH_ERROR})
+        console.error(err);
+    }
+}
+
+
+export const passwordRecovery = (email) => async (dispatch) => {
+    try {
+        dispatch({type: AUTH_FETCH_START});
+        const res = await request('password-reset', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({email: email})
+        });
+        dispatch({type: AUTH_FETCH_COMPLETE})
+        dispatch({type: SET_RESET_STATE, payload: true})
+    } catch (err) {
+        dispatch({type: SET_RESET_STATE, payload: false})
+        dispatch({type: AUTH_FETCH_ERROR})
+        console.error(err);
+    }
+}
+
+export const passwordReset = (password, reset_code) => async (dispatch) => {
+    try {
+        dispatch({type: AUTH_FETCH_START});
+        const res = await request('password-reset/reset', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({password: password, token: reset_code})
+        });
+        dispatch({type: RESET_FETCH_COMPLETE})
+        if (res.success) {
+            dispatch({type: SET_RESET_STATE, payload: false})
+        } else {
+            dispatch({type: RESET_FETCH_ERROR, message: 'Не верно введен проверочный код'})
+        }
+
     } catch (err) {
         dispatch({type: AUTH_FETCH_ERROR})
         console.error(err);

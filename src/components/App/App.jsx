@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import MainPage from "../../pages/MainPage/MainPage";
 import {AppHeader} from "../AppHeader/AppHeader";
 import Login from "../../pages/Login/Login";
@@ -11,36 +11,70 @@ import Loader from "../Loader/Loader";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkUserAuth} from "../../services/actions/authActions";
-import * as PropTypes from "prop-types";
 import {OnlyAuth, OnlyUnAuth} from "./protected-route";
+import {ProtectedResetRoute} from "./protected-reset-route";
+import {Modal} from "../Modal/Modal";
+import {IngredientDetails} from "../BurgerIngredients/IngredientCard/modals/IngredientDetails/IngredientDetails";
+import {hideInfoModal} from "../../services/actions/showInfoModalAction";
+import IngredientsDetails from "../../pages/IngredientsDetails/IngredientsDetails";
+import {getIngredientsData} from "../../services/actions/ingredientsActions";
 
 
 function App() {
     const userActionsLoader = useSelector((store) => store.authData.user_actions_loader);
-    console.log(userActionsLoader)
-
+    const location = useLocation();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const isAuth = useSelector(store => store.authData.is_auth)
-    console.log('Пользователь авторизован', isAuth)
+    const background = location.state && location.state.background;
 
     useEffect(() => {
         dispatch(checkUserAuth());
-    }, []);
+        dispatch(getIngredientsData());
+    }, [dispatch]);
+
+    function closeModal() {
+        navigate(-1);
+        dispatch(hideInfoModal());
+    }
+
     return (
         <>
             {userActionsLoader && <Loader/>}
-            <BrowserRouter>
+
                 <AppHeader/>
-                <Routes>
+                <Routes location={background || location}>
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<OnlyUnAuth component={<Login/>}/>}/>
                     <Route path="/register" element={<OnlyUnAuth component={<Register/>}/>}/>
-                    <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
-                    <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
+                    <Route path='/ingredients/:ingredientId'
+                           element={<IngredientsDetails />} />
+                    <Route path="/forgot-password" element={
+                        <OnlyUnAuth component={
+                            <ForgotPassword />
+                        }/>
+                    }/>
+                    <Route path="/reset-password" element={
+                        <OnlyUnAuth component={
+                            <ProtectedResetRoute component={
+                                <ResetPassword />
+                            }/>
+                        }/>
+                    }/>
                     <Route path="/profile" element={<OnlyAuth component={<Profile/>} />}/>
                     <Route path="*" element={<NotFound404/>}/>
                 </Routes>
-            </BrowserRouter>
+                {background && (
+                    <Routes>
+                        <Route
+                            path='/ingredients/:ingredientId'
+                            element={
+                                <Modal toggleModal={closeModal} modalTitle={'Детали ингредиента'}>
+                                    <IngredientDetails/>
+                                </Modal>
+                            }
+                        />
+                    </Routes>
+                )}
         </>
     );
 }

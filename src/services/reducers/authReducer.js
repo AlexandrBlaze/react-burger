@@ -1,7 +1,12 @@
 import {
     AUTH_FETCH_COMPLETE,
     AUTH_FETCH_ERROR,
-    AUTH_FETCH_START, CLEAR_USER_DATA, FETCH_COMPLETE, SET_USER_DATA, UPDATE_TOKEN, UPDATE_USER_DATA,
+    AUTH_FETCH_START,
+    CLEAR_USER_DATA, RESET_FETCH_COMPLETE, RESET_FETCH_ERROR,
+    SET_RESET_STATE,
+    SET_USER_DATA,
+    UPDATE_TOKEN,
+    UPDATE_USER_DATA,
     USER_IS_AUTH,
     USER_IS_NOT_IDENTIFIED
 } from "../actions/authActions";
@@ -12,6 +17,11 @@ const initialState = {
     refreshToken: '',
     user: null,
     is_auth: false,
+    isResetPassword: false,
+    resetFetchHasError: {
+        error: false,
+        message: ''
+    },
     user_actions_error: false,
     user_actions_loader: false,
 }
@@ -72,6 +82,30 @@ export default function authReducer(state = initialState, actions) {
             }
         case CLEAR_USER_DATA:
             return state.user = null;
+        case SET_RESET_STATE: {
+            return {
+                ...state,
+                isResetPassword: actions.payload,
+            }
+        }
+        case RESET_FETCH_ERROR: {
+            return {
+                ...state,
+                resetFetchHasError: {
+                    error: true,
+                    message: actions.message,
+                }
+            }
+        }
+        case RESET_FETCH_COMPLETE:
+            return {
+                ...state,
+                user_actions_loader: false,
+                resetFetchHasError: {
+                    error: false,
+                    message: '',
+                }
+            }
         default:
             return state;
     }

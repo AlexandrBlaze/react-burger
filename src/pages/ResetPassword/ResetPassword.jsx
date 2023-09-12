@@ -14,7 +14,8 @@ export default function ResetPassword() {
     const isResetPassword = useSelector(state => state.authData.isResetPassword)
     const error = useSelector(state => state.authData.resetFetchHasError)
 
-    const confirmReset = useCallback(() => {
+    const confirmReset = useCallback(event => {
+        event.preventDefault();
         if (newPassword.length && resetCode.length) {
             dispatch(passwordReset(newPassword, resetCode))
         }
@@ -22,7 +23,7 @@ export default function ResetPassword() {
     
     return (
         <main className={styles.wrapper}>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={(e) => confirmReset(e)}>
                 <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
                 <PasswordInput
                     placeholder={'Введите новый пароль'}
@@ -46,7 +47,7 @@ export default function ResetPassword() {
 
 
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" onClick={() => confirmReset()} type="primary" size="medium" extraClass='mb-20'>
+                    <Button htmlType="submit"  type="primary" size="medium" extraClass='mb-20'>
                         Сохранить
                     </Button>
                 </div>

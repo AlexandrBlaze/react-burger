@@ -13,7 +13,8 @@ export default function Login() {
     const [password, setPassword] = React.useState('')
 
 
-    const sendForm = useCallback(() => {
+    const sendForm = useCallback(event => {
+        event.preventDefault();
         if (email && password) {
             dispatch(signIn(email, password));
         }
@@ -21,7 +22,7 @@ export default function Login() {
     },[email, password]);
     return (
         <main className={styles.wrapper}>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={(e) => sendForm(e)}>
                 <h1 className="text text_type_main-medium mb-6">Вход</h1>
                 <EmailInput
                     onChange={e => setEmail(e.target.value)}
@@ -37,7 +38,7 @@ export default function Login() {
                     extraClass="mb-6"
                 />
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" type="primary" onClick={() => sendForm()} size="medium" extraClass='mb-20'>
+                    <Button htmlType="submit" type="primary" size="medium" extraClass='mb-20'>
                         Войти
                     </Button>
                 </div>

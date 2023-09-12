@@ -21,12 +21,13 @@ export default function ForgotPassword() {
         }
     }, [isResetPassword, navigate])
 
-    const fargot = () => {
+    const forgotPass = (e) => {
+        e.preventDefault();
         dispatch(passwordRecovery(value))
     }
     return (
         <main className={styles.wrapper}>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={(e) => forgotPass(e)}>
                 <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
                 <EmailInput
                     onChange={(e) => onChange(e)}
@@ -38,7 +39,7 @@ export default function ForgotPassword() {
                 />
 
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" type="primary" size="medium" extraClass='mb-20' onClick={() => fargot()}>
+                    <Button htmlType="submit" type="primary" size="medium" extraClass='mb-20'>
                         Восстановить
                     </Button>
                 </div>

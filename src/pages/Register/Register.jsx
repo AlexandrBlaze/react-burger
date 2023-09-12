@@ -17,7 +17,8 @@ export default function Register() {
         alert('Icon Click Callback')
     }
 
-    const sendForm = useCallback(() => {
+    const sendForm = useCallback(event => {
+        event.preventDefault();
         if (name && email && password) {
             dispatch(registerUser(name, email, password));
         }
@@ -25,7 +26,7 @@ export default function Register() {
     },[email, name, password]);
     return (
         <main className={styles.wrapper}>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={(e) => sendForm(e)}>
                 <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
                 <Input
                     type={'text'}
@@ -54,7 +55,7 @@ export default function Register() {
                     extraClass="mb-6"
                 />
                 <div className={styles.buttonWrap}>
-                    <Button htmlType="button" onClick={() => sendForm()} type="primary" size="medium" extraClass='mb-20'>
+                    <Button htmlType="submit" type="primary" size="medium" extraClass='mb-20'>
                         Зарегистрироваться
                     </Button>
                 </div>

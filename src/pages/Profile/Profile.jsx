@@ -46,7 +46,8 @@ export default function Profile() {
         setIsFocused(false);
     }
 
-    const saveForm = useCallback(() => {
+    const saveForm = useCallback(event => {
+        event.preventDefault();
         dispatch(updateUserData(formValue.name, formValue.email, formValue.password))
     },[dispatch, formValue.email, formValue.name, formValue.password]);
 
@@ -76,7 +77,7 @@ export default function Profile() {
                         изменить свои персональные данные
                     </div>
                 </div>
-                <form>
+                <form onSubmit={(e) => saveForm(e)}>
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
@@ -117,10 +118,9 @@ export default function Profile() {
                                     extraClass="mr-2">
                                 Отменить
                             </Button>
-                            <Button htmlType="button"
+                            <Button htmlType="submit"
                                     type="primary"
                                     size="medium"
-                                    onClick={() => saveForm()}
                                     extraClass='mb-20'>
                                 Сохранить
                             </Button>

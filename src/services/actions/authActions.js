@@ -153,7 +153,7 @@ export const fetchWithRefresh = async (url, options) => {
 export const updateUserData = (name, email, password) => async (dispatch, getState) => {
     try {
         dispatch({type: AUTH_FETCH_START});
-        const res = await request('auth/user', {
+        const res = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",

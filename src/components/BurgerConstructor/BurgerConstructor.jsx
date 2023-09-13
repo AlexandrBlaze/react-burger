@@ -14,6 +14,7 @@ import {
 } from "../../services/actions/burgerConstructorActions";
 import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
 import {nanoid} from "nanoid";
+import {useNavigate} from "react-router-dom";
 
 export function BurgerConstructor() {
 
@@ -28,17 +29,19 @@ export function BurgerConstructor() {
     const orderError = useSelector(store => store.orderInfo.error);
 
     const orderModalVisible = useSelector(state => state.orderInfo.orderModalVisible);
+    const isAuth = useSelector(state => state.authData.is_auth);
+    const navigate = useNavigate();
 
     const createOrder = useCallback(() => {
+        if (!isAuth) {
+            navigate('/login');
+            return
+        }
         dispatch(getCreateOrder())
         if (!orderLoader) {
             setVisible(true);
         }
     }, [dispatch, orderLoader])
-
-    const closeModal = () => {
-        setVisible(false);
-    }
 
     useEffect(() => {
         setIngredients(constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN))

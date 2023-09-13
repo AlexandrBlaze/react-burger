@@ -1,38 +1,48 @@
 import ingredientDetailsStyles from './IngredientDetails.module.css'
-import PropTypes from "prop-types";
+import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
 
+export function IngredientDetails() {
+    const { ingredientId } = useParams();
+    const [ingredient, setIngredient] = useState(null);
+    const ingredientItems = useSelector(store => store.ingredients.ingredientItems);
 
-IngredientDetails.propTypes = {
-    image: PropTypes.string,
-    name: PropTypes.string,
-    calories: PropTypes.number,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-}
-export function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}) {
+    const ingredientInfo = ingredientItems.find(item => item._id === ingredientId)
+
+    useEffect(() => {
+        if (ingredientItems.length) {
+            setIngredient(ingredientInfo)
+        }
+
+    },[ingredientInfo, ingredientItems.length])
     return (
-        <section className={ingredientDetailsStyles.card}>
-            <img className={ingredientDetailsStyles.preview} src={image} alt={name}/>
-            <div className={`${ingredientDetailsStyles.name} text text_type_main-medium`}>{name}</div>
-            <div className={ingredientDetailsStyles.params}>
-                <div className={ingredientDetailsStyles.param}>
-                    <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Калории,ккал</div>
-                    <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{calories}</div>
-                </div>
-                <div className={ingredientDetailsStyles.param}>
-                    <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Белки, г</div>
-                    <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{proteins}</div>
-                </div>
-                <div className={ingredientDetailsStyles.param}>
-                    <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Жиры, г</div>
-                    <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{fat}</div>
-                </div>
-                <div className={ingredientDetailsStyles.param}>
-                    <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Углеводы, г</div>
-                    <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{carbohydrates}</div>
-                </div>
-            </div>
-        </section>
+        <>
+            {ingredient &&
+                <section className={ingredientDetailsStyles.card}>
+                    <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt={ingredient.name}/>
+                    <div className={`${ingredientDetailsStyles.name} text text_type_main-medium`}>{ingredient.name}</div>
+                    <div className={ingredientDetailsStyles.params}>
+                        <div className={ingredientDetailsStyles.param}>
+                            <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Калории,ккал</div>
+                            <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{ingredient.calories}</div>
+                        </div>
+                        <div className={ingredientDetailsStyles.param}>
+                            <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Белки, г</div>
+                            <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{ingredient.proteins}</div>
+                        </div>
+                        <div className={ingredientDetailsStyles.param}>
+                            <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Жиры, г</div>
+                            <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{ingredient.fat}</div>
+                        </div>
+                        <div className={ingredientDetailsStyles.param}>
+                            <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Углеводы, г</div>
+                            <div className={`${ingredientDetailsStyles.paramValue} text text_type_digits-default text_color_inactive`}>{ingredient.carbohydrates}</div>
+                        </div>
+                    </div>
+                </section>
+            }
+            </>
+
     )
 }

@@ -5,10 +5,15 @@ import {ingredientItem} from "../../../constants/ingredientItem";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {showInfoModal} from "../../../services/actions/showInfoModalAction";
+import {Link, useLocation} from "react-router-dom";
 
 IngredientCard.propTypes = ingredientItem;
 
 export function IngredientCard(props) {
+    const location = useLocation();
+
+    const ingredientId = props._id;
+
     const dispatch = useDispatch();
     const modalParams = {
         image: props.image,
@@ -48,21 +53,25 @@ export function IngredientCard(props) {
 
     return (
         <> {!isDrag &&
-                <section onClick={toggleModal}
-                         ref={dragRef}
-                         className={ingredientCardStyles.card}>
-                    <div className={ingredientCardStyles.inner}>
-                        {(bunCounter && props.type === 'bun') && (<Counter count={bunCounter} size="default" extraClass="m-1" />)}
-                        {!!counter && <Counter count={counter} size="default" extraClass="m-1" />}
-                        <img className={ingredientCardStyles.preview} src={props.image} alt={props.name}/>
-                        <div className={`${ingredientCardStyles.price} pt-1 pb-1 text_type_digits-default`}>
-                            <span className="mr-2">{props.price} </span><CurrencyIcon type="primary" />
-                        </div>
-                        <div className={`${ingredientCardStyles.name} text text_type_main-default`}>
-                            {props.name}
-                        </div>
+            <Link onClick={toggleModal}
+                  ref={dragRef}
+                  key={ingredientId}
+                  to={`/ingredients/${ingredientId}`}
+                  state={{ background: location }}
+                  className={ingredientCardStyles.card}>
+                <div className={ingredientCardStyles.inner}>
+                    {(bunCounter && props.type === 'bun') && (<Counter count={bunCounter} size="default" extraClass="m-1" />)}
+                    {!!counter && <Counter count={counter} size="default" extraClass="m-1" />}
+                    <img className={ingredientCardStyles.preview} src={props.image} alt={props.name}/>
+                    <div className={`${ingredientCardStyles.price} pt-1 pb-1 text_type_digits-default`}>
+                        <span className="mr-2">{props.price} </span><CurrencyIcon type="primary" />
                     </div>
-                </section>
+                    <div className={`${ingredientCardStyles.name} text text_type_main-default`}>
+                        {props.name}
+                    </div>
+                </div>
+            </Link>
+
             }
         </>
     )

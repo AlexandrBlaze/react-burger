@@ -1,6 +1,7 @@
 import request from "../../utils/requestHelper";
 import {BASE_URL} from "../../ApiUlrs/apiUrls";
-
+import {AppThunk} from "../reducers/rootReducer";
+import {IUser} from "../reducers/authReducer";
 export const AUTH_FETCH_START = 'AUTH_FETCH_START';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const AUTH_FETCH_COMPLETE = 'FETCH_COMPLETE';
@@ -14,32 +15,34 @@ export const SET_RESET_STATE = 'SET_RESET_STATE';
 export const RESET_FETCH_ERROR = 'RESET_FETCH_ERROR';
 export const RESET_FETCH_COMPLETE = 'RESET_FETCH_COMPLETE';
 
-function saveTokenToLocalStorage(access, refresh) {
+function saveTokenToLocalStorage(access: string, refresh: string) {
     const userTokens = { accessToken: access, refreshToken: refresh };
     localStorage.setItem('tokens', JSON.stringify(userTokens));
 }
-export const registerUser = (name, email, password) => async (dispatch) => {
-    try {
-        dispatch({type: AUTH_FETCH_START})
-        const userParams = {
-            name,
-            email,
-            password
-        };
-        const res = await request('auth/register', {
-            method: 'POST',
-            headers: {'Content-type': 'application/json; charset=UTF-8',},
-            body: JSON.stringify(userParams)
-        })
-        saveTokenToLocalStorage(res.accessToken, res.refreshToken);
-        dispatch({type: SET_USER_DATA, payload: res});
-        dispatch({type: AUTH_FETCH_COMPLETE})
-    } catch (error) {
-        dispatch({type: AUTH_FETCH_ERROR});
+export const registerUser = (name: string, email: string, password: string): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch({type: AUTH_FETCH_START})
+            const userParams: IUser = {
+                name,
+                email,
+                password
+            };
+            const res = await request('auth/register', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json; charset=UTF-8',},
+                body: JSON.stringify(userParams)
+            })
+            saveTokenToLocalStorage(res.accessToken, res.refreshToken);
+            dispatch({type: SET_USER_DATA, payload: res});
+            dispatch({type: AUTH_FETCH_COMPLETE})
+        } catch (error) {
+            dispatch({type: AUTH_FETCH_ERROR});
+        }
     }
 }
 
-export const logout = async (dispatch, getState) => {
+export const logout = (): AppThunk => async (dispatch, getState) => {
     const params = {
         token: getState().authData.refreshToken,
     }
@@ -59,7 +62,7 @@ export const logout = async (dispatch, getState) => {
     }
 
 }
-export const signIn = (email, password) => async (dispatch) => {
+export const signIn = (email: string, password: string): AppThunk => async (dispatch) => {
     try {
         dispatch({type: AUTH_FETCH_START})
         const params = {
@@ -81,8 +84,8 @@ export const signIn = (email, password) => async (dispatch) => {
     }
 }
 
-export const checkUserAuth = () => async (dispatch) =>  {
-    const storedUser = JSON.parse(localStorage.getItem('tokens'));
+export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
+    const storedUser = JSON.parse(localStorage.getItem('tokens') || "");
     if (storedUser?.refreshToken || storedUser?.accessToken) {
         dispatch({type: AUTH_FETCH_START});
         const userData = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
@@ -112,11 +115,11 @@ export const checkUserAuth = () => async (dispatch) =>  {
 
 
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const refreshToken = (refresh) => {
+export const refreshToken = (refresh: string) => {
     return fetch(`${BASE_URL}/auth/token`, {
         method: "POST",
         headers: {
@@ -128,12 +131,13 @@ export const refreshToken = (refresh) => {
     }).then(checkResponse);
 };
 
-export const fetchWithRefresh = async (url, options) => {
-    const storedUser = JSON.parse(localStorage.getItem('tokens'));
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
+    const storedUser = JSON.parse(localStorage.getItem('tokens') || "");
     try {
         const res = await fetch(url, options);
         return await checkResponse(res);
     } catch (err) {
+        // @ts-ignore
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(storedUser.refreshToken); //обновляем токен
             if (!refreshData.success) {
@@ -141,7 +145,7 @@ export const fetchWithRefresh = async (url, options) => {
             }
             // обновляем полученные токены в localStorage
             saveTokenToLocalStorage(refreshData.accessToken, refreshData.refreshToken);
-            options.headers.authorization = refreshData.accessToken;
+            options.headers = {...options.headers, authorization: refreshData.accessToken}
             const res = await fetch(url, options); //повторяем запрос
             return await checkResponse(res);
         } else {
@@ -150,7 +154,7 @@ export const fetchWithRefresh = async (url, options) => {
     }
 };
 
-export const updateUserData = (name, email, password) => async (dispatch, getState) => {
+export const updateUserData = (name: string, email: string, password: string): AppThunk => async (dispatch, getState) => {
     try {
         dispatch({type: AUTH_FETCH_START});
         const res = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
@@ -170,7 +174,7 @@ export const updateUserData = (name, email, password) => async (dispatch, getSta
 }
 
 
-export const passwordRecovery = (email) => async (dispatch) => {
+export const passwordRecovery = (email: string): AppThunk => async (dispatch) => {
     try {
         dispatch({type: AUTH_FETCH_START});
         const res = await request('password-reset', {
@@ -189,7 +193,7 @@ export const passwordRecovery = (email) => async (dispatch) => {
     }
 }
 
-export const passwordReset = (password, reset_code) => async (dispatch) => {
+export const passwordReset = (password: string, reset_code: string): AppThunk => async (dispatch) => {
     try {
         dispatch({type: AUTH_FETCH_START});
         const res = await request('password-reset/reset', {

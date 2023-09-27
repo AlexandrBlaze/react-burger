@@ -1,3 +1,5 @@
+import {AppThunk} from "../reducers/rootReducer";
+
 export const INGREDIENT_ITEM_ADD = 'INGREDIENT_ITEM_ADD'
 export const INGREDIENT_BUN_ITEM_ADD = 'INGREDIENT_BUN_ITEM_ADD'
 export const INGREDIENT_ITEM_MOVED = 'INGREDIENT_ITEM_MOVED'
@@ -5,7 +7,7 @@ export const INGREDIENT_ITEM_REMOVE = 'INGREDIENT_ITEM_REMOVE'
 
 
 
-export const removeItem = (index) => async (dispatch, getState) => {
+export const removeItem = (index: number): AppThunk => async (dispatch, getState) => {
     getState().ingredientsConstructor.items.splice(index, 1);
 
     dispatch({
@@ -15,7 +17,7 @@ export const removeItem = (index) => async (dispatch, getState) => {
 }
 
 
-export const moveCard = (dragIndex, hoverIndex) => (dispatch, getState) => {
+export const moveCard = (dragIndex: number, hoverIndex: number): AppThunk => (dispatch, getState) => {
     const dragCard = getState().ingredientsConstructor.items[dragIndex];
     const newCards = [...getState().ingredientsConstructor.items];
     newCards.splice(dragIndex, 1)

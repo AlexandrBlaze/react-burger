@@ -1,22 +1,23 @@
 import ingredientSectionStyles from './IngridientsSection.module.css'
 import {IngredientCard} from "../IngredientCard/IngredientCard";
-import PropTypes, {shape} from "prop-types";
-import {ingredientItem} from "../../../constants/ingredientItem";
 import {forwardRef} from "react";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
 
-export const IngredientsSection = forwardRef(({sectionItems, name}, ref) => {
+
+interface Props {
+    sectionItems: IIngredientItem[],
+    name: string
+}
+export type Ref = HTMLElement;
+export const IngredientsSection = forwardRef<Ref, Props>((props , ref) => {
     return (
         <section className={ingredientSectionStyles.section} ref={ref}>
-            <h2 className={ingredientSectionStyles.sectionTitle}>{name}</h2>
+            <h2 className={ingredientSectionStyles.sectionTitle}>{props.name}</h2>
             <div className={ingredientSectionStyles.cards}>
-                {sectionItems.map(item => {
+                {props.sectionItems.map((item: IIngredientItem) => {
                     return <IngredientCard key={item._id} {...item}/>
                 })}
             </div>
         </section>
     )
 });
-
-IngredientsSection.propTypes = {
-    sectionItems: PropTypes.arrayOf(shape(ingredientItem))
-}

@@ -1,32 +1,33 @@
 import profileStyles from './Profile.module.css'
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useCallback, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {logout, updateUserData} from "../../services/actions/authActions";
 import styles from "../Profile/Profile.module.css";
+import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
 
 export default function Profile() {
 
-    const userData = useSelector((state) => state.authData.user)
+    const userData  = useAppSelector((state) => state.authData.user)
 
-    const inputRef = React.useRef(null)
-    const [isFocused, setIsFocused] = useState(true);
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    const [isFocused, setIsFocused] = useState<boolean>(true);
 
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [formValue, setFormValue] = useState({
-        name: userData.name,
-        email: userData.email,
-        password: "",
+        name: userData?.name || "",
+        email: userData?.email || "",
+        password: userData?.password || "",
     });
 
-    const [buttonVisible, setButtonVisible] = useState(false);
+    const [buttonVisible, setButtonVisible] = useState<boolean>(false);
 
-    const onLogout = () => {
-        dispatch(logout);
+    const onLogout = (): void => {
+        debugger
+        dispatch(logout());
     }
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setFormValue((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
@@ -34,19 +35,27 @@ export default function Profile() {
     };
 
     useEffect(() => {
-        if (formValue.name !== userData.name || formValue.email !== userData.email || formValue.password.length) {
-            setButtonVisible(true);
-        } else {
-            setButtonVisible(false);
+        if (userData) {
+            if (formValue.name !== userData.name || formValue.email !== userData.email || formValue.password.length) {
+                setButtonVisible(true);
+            } else {
+                setButtonVisible(false);
+            }
         }
-    }, [formValue.email, formValue.name, formValue.password.length, userData.email, userData.name])
+
+    }, [formValue.email, formValue.name, formValue.password.length, userData?.email, userData?.name])
 
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus()
+            }
+        }, 0)
         setIsFocused(false);
+
     }
 
-    const saveForm = useCallback(event => {
+    const saveForm = useCallback((event: { preventDefault: () => void; }) => {
         event.preventDefault();
         dispatch(updateUserData(formValue.name, formValue.email, formValue.password))
     },[dispatch, formValue.email, formValue.name, formValue.password]);
@@ -56,11 +65,14 @@ export default function Profile() {
     };
 
     const setInitialParams = () => {
-        setFormValue({
-            name: userData.name,
-            email: userData.email,
-            password: ""
-        })
+        if (userData) {
+            setFormValue({
+                name: userData.name,
+                email: userData.email,
+                password: ""
+            })
+        }
+
     }
 
     return (
@@ -70,7 +82,7 @@ export default function Profile() {
                     <nav className={profileStyles.nav}>
                         <li className='text text_type_main-medium'>Профиль</li>
                         <li className='text text_type_main-medium text_color_inactive'>История заказов</li>
-                        <li className='text text_type_main-medium text_color_inactive' onClick={onLogout}>Выход</li>
+                        <li className='text text_type_main-medium text_color_inactive' onClick={() => onLogout()}>Выход</li>
                     </nav>
                     <div className={profileStyles.infoMessage}>
                         В этом разделе вы можете

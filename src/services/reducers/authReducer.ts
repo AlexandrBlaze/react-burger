@@ -11,8 +11,27 @@ import {
     USER_IS_NOT_IDENTIFIED
 } from "../actions/authActions";
 
+export interface IUser {
+    name: string,
+    email: string,
+    password?: string,
+}
 
-const initialState = {
+interface IAuthState {
+    accessToken: string,
+    refreshToken: string,
+    user: null | IUser,
+    is_auth: boolean,
+    isResetPassword: boolean,
+    resetFetchHasError: {
+        error: boolean,
+        message: string
+    },
+    user_actions_error: boolean,
+    user_actions_loader: boolean,
+}
+
+const initialState: IAuthState = {
     accessToken: '',
     refreshToken: '',
     user: null,
@@ -26,7 +45,65 @@ const initialState = {
     user_actions_loader: false,
 }
 
-export default function authReducer(state = initialState, actions) {
+type TAuthFetchStart = {
+    type: typeof AUTH_FETCH_START,
+    user_actions_loader: boolean
+}
+type TAuthFetchComplete = {
+    type: typeof AUTH_FETCH_COMPLETE,
+    user_actions_loader: boolean,
+    user_actions_error: boolean,
+}
+type TAuthFetchError = {
+    type: typeof AUTH_FETCH_ERROR,
+    user_actions_loader: boolean,
+    user_actions_error: boolean,
+}
+type TSetUserData = {
+    type: typeof SET_USER_DATA,
+    payload: {
+        accessToken: string,
+        refreshToken: string,
+        user: IUser,
+    }
+}
+type TUpdateToken = {
+    type: typeof UPDATE_TOKEN,
+    payload: {
+        accessToken: string,
+        refreshToken: string,
+    }
+}
+type TUpdateUserData = {
+    type: typeof UPDATE_USER_DATA,
+    payload: {
+        user: IUser
+    }
+}
+type TUserIsAuth ={
+    type: typeof USER_IS_AUTH
+}
+type TUserIsNotIdentified ={
+    type: typeof USER_IS_NOT_IDENTIFIED
+}
+type TClearUserData = {
+    type: typeof CLEAR_USER_DATA
+}
+type TSetResetState = {
+    type: typeof SET_RESET_STATE,
+    payload: boolean,
+}
+type TResetFetchError = {
+    type: typeof RESET_FETCH_ERROR,
+    message: string,
+}
+type TResetFetchComplete = {
+    type: typeof RESET_FETCH_COMPLETE
+}
+
+type TAuthActions = TAuthFetchStart | TAuthFetchComplete | TSetUserData | TUpdateToken | TUpdateUserData | TAuthFetchError | TUserIsAuth | TUserIsNotIdentified | TClearUserData | TSetResetState | TResetFetchError | TResetFetchComplete
+
+export default function authReducer(state = initialState, actions: TAuthActions): IAuthState {
     switch (actions.type) {
         case AUTH_FETCH_START:
             return {
@@ -81,7 +158,10 @@ export default function authReducer(state = initialState, actions) {
                 is_auth: false
             }
         case CLEAR_USER_DATA:
-            return state.user = null;
+            return {
+                ...state,
+                user: null
+            };
         case SET_RESET_STATE: {
             return {
                 ...state,

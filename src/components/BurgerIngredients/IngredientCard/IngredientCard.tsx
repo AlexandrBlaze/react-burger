@@ -1,28 +1,27 @@
 import React, {useCallback, useMemo} from "react";
 import ingredientCardStyles from './IngredientCard.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {ingredientItem} from "../../../constants/ingredientItem";
-import {useDispatch, useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {showInfoModal} from "../../../services/actions/showInfoModalAction";
 import {Link, useLocation} from "react-router-dom";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
+import {useAppDispatch, useAppSelector} from "../../App/hooks";
 
-IngredientCard.propTypes = ingredientItem;
+export interface IModalParams {
+    image: string,
+    name: string,
+    proteins: number,
+    calories: number,
+    carbohydrates: number,
+    fat: number,
+}
 
-export function IngredientCard(props) {
+export function IngredientCard(props: IIngredientItem) {
     const location = useLocation();
 
     const ingredientId = props._id;
 
-    const dispatch = useDispatch();
-    const modalParams = {
-        image: props.image,
-        name: props.name,
-        calories: props.calories,
-        proteins: props.proteins,
-        fat: props.fat,
-        carbohydrates: props.carbohydrates,
-    }
+    const dispatch = useAppDispatch();
 
     const [{isDrag}, dragRef] = useDrag({
         type: 'ingredients',
@@ -31,8 +30,8 @@ export function IngredientCard(props) {
             isDrag: monitor.isDragging()
         })
     })
-    const constructorItems = useSelector(state => state.ingredientsConstructor.items)
-    const bunItem = useSelector(state => state.ingredientsConstructor.bun);
+    const constructorItems = useAppSelector(state => state.ingredientsConstructor.items)
+    const bunItem = useAppSelector(state => state.ingredientsConstructor.bun);
 
     const bunCounter = useMemo(() => {
         if (bunItem?._id === props._id) {
@@ -41,15 +40,23 @@ export function IngredientCard(props) {
     }, [bunItem?._id, props._id]);
 
     const getCount = useMemo(() => {
-        return constructorItems.filter((element) => element._id === props._id);
+        return constructorItems.filter((element: IIngredientItem) => element._id === props._id);
     }, [constructorItems, props._id]);
 
     const counter = getCount.length;
 
 
     const toggleModal = useCallback(() => {
+        const modalParams: IModalParams = {
+            image: props.image,
+            name: props.name,
+            calories: props.calories,
+            proteins: props.proteins,
+            fat: props.fat,
+            carbohydrates: props.carbohydrates,
+        }
         dispatch(showInfoModal(modalParams))
-    }, [dispatch])
+    }, [dispatch, props.calories, props.carbohydrates, props.fat, props.image, props.name, props.proteins])
 
     return (
         <> {!isDrag &&

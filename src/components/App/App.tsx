@@ -9,7 +9,6 @@ import NotFound404 from "../../pages/NotFound404/NotFound404";
 import Profile from "../../pages/Profile/Profile";
 import Loader from "../Loader/Loader";
 import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {checkUserAuth} from "../../services/actions/authActions";
 import {OnlyAuth, OnlyUnAuth} from "./protected-route";
 import {ProtectedResetRoute} from "./protected-reset-route";
@@ -18,13 +17,16 @@ import {IngredientDetails} from "../BurgerIngredients/IngredientCard/modals/Ingr
 import {hideInfoModal} from "../../services/actions/showInfoModalAction";
 import IngredientsDetails from "../../pages/IngredientsDetails/IngredientsDetails";
 import {getIngredientsData} from "../../services/actions/ingredientsActions";
+import {useAppDispatch, useAppSelector} from "./hooks";
 
 
 function App() {
-    const userActionsLoader = useSelector((store) => store.authData.user_actions_loader);
+    const userActionsLoader = useAppSelector((state) => {
+        return state.authData.user_actions_loader
+    });
     const location = useLocation();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const background = location.state && location.state.background;
 
     useEffect(() => {

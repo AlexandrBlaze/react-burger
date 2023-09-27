@@ -1,12 +1,26 @@
 import {CLOSE_INFO_MODAL, OPEN_INFO_MODAL} from "../actions/showInfoModalAction";
+import {IIngredientItem} from "./ingredientsReducer";
 
+interface IShowModalInfoState {
+    modalData: IIngredientItem | null,
+    modalInfoVisible: boolean,
+}
 
-const defaultState = {
+type TOpenInfoModal = {
+    type: typeof OPEN_INFO_MODAL,
+    payload: IIngredientItem,
+}
+type TCloseInfoModal = {
+    type: typeof CLOSE_INFO_MODAL
+}
+type TShowModalInfo = TOpenInfoModal | TCloseInfoModal
+
+const defaultState: IShowModalInfoState = {
     modalData: null,
     modalInfoVisible: false,
 }
 
-export function showInfoModalReducer(state = defaultState, action) {
+export function showInfoModalReducer(state = defaultState, action: TShowModalInfo): IShowModalInfoState {
     switch (action.type) {
         case OPEN_INFO_MODAL:
             return {

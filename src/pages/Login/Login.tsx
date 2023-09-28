@@ -2,24 +2,23 @@ import styles from './Login.module.css'
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {signIn} from "../../services/actions/authActions";
-import Loader from "../../components/Loader/Loader";
+import {useAppDispatch} from "../../components/App/hooks";
 
 
 export default function Login() {
-    const dispatch = useDispatch();
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
+    const dispatch = useAppDispatch();
+    const [email, setEmail] = React.useState<string>('')
+    const [password, setPassword] = React.useState<string>('')
 
 
-    const sendForm = useCallback(event => {
+    const sendForm = useCallback((event: { preventDefault: () => void; }) => {
         event.preventDefault();
         if (email && password) {
             dispatch(signIn(email, password));
         }
 
-    },[email, password]);
+    },[dispatch, email, password]);
     return (
         <main className={styles.wrapper}>
             <form className={styles.form} onSubmit={(e) => sendForm(e)}>

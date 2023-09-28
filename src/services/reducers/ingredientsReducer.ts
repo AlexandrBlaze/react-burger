@@ -5,6 +5,7 @@ import {
 } from "../actions/ingredientsActions";
 
 export interface IIngredientItem {
+    count: number;
     calories: number,
     carbohydrates: number,
     fat: number,
@@ -17,7 +18,8 @@ export interface IIngredientItem {
     type: string,
     _id: string,
     __v: number,
-    uniqueId: number
+    uniqueId?: number
+    index?: number
 }
 
 type TGetIngredients = {

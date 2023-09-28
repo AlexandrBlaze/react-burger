@@ -24,7 +24,6 @@ export default function Profile() {
     const [buttonVisible, setButtonVisible] = useState<boolean>(false);
 
     const onLogout = (): void => {
-        debugger
         dispatch(logout());
     }
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

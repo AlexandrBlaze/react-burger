@@ -1,12 +1,13 @@
 import ingredientDetailsStyles from './IngredientDetails.module.css'
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import {useAppSelector} from "../../../../App/hooks";
+import {IIngredientItem} from "../../../../../services/reducers/ingredientsReducer";
 
 export function IngredientDetails() {
     const { ingredientId } = useParams();
-    const [ingredient, setIngredient] = useState(null);
-    const ingredientItems = useSelector(store => store.ingredients.ingredientItems);
+    const [ingredient, setIngredient] = useState<IIngredientItem>();
+    const ingredientItems = useAppSelector(store => store.ingredients.ingredientItems);
 
     const ingredientInfo = ingredientItems.find(item => item._id === ingredientId)
 

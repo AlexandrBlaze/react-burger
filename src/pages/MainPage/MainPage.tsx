@@ -1,17 +1,14 @@
-import {useSelector} from "react-redux";
 import mainPageStyles from './MainPage.module.css'
 import {DndProvider} from "react-dnd";
 import {BurgerIngredients} from "../../components/BurgerIngredients/BurgerIngredients";
 import {BurgerConstructor} from "../../components/BurgerConstructor/BurgerConstructor";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import Loader from "../../components/Loader/Loader";
+import {useAppSelector} from "../../components/App/hooks";
 
 function MainPage() {
-    const error = useSelector(store =>  store.ingredients.error)
-    const loader = useSelector(store => store.ingredients.loader)
-
-
-
+    const error = useAppSelector(store =>  store.ingredients.error)
+    const loader = useAppSelector(store => store.ingredients.loader)
     return (
         <>
             <main className={mainPageStyles.mainPage}>

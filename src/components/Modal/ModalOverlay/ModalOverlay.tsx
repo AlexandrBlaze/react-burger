@@ -1,6 +1,6 @@
 import modalOverlayStyles from './ModalOverlay.module.css'
-export function ModalOverlay({onClose}) {
-    function detectOverlayClick(e) {
+export function ModalOverlay({onClose}: {onClose: () => void}) {
+    function detectOverlayClick(e: { nativeEvent: { preventDefault: () => void; }; }) {
         e.nativeEvent.preventDefault()
         onClose();
     }

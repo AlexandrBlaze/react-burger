@@ -1,20 +1,19 @@
 import styles from './ResetPassword.module.css'
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {passwordReset} from "../../services/actions/authActions";
+import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
 
 
 export default function ResetPassword() {
-    const dispatch = useDispatch();
-    const [newPassword, setNewPassword] = React.useState('')
-    const [resetCode, setResetCode] = React.useState('')
-    const inputRef = React.useRef(null)
-    const isResetPassword = useSelector(state => state.authData.isResetPassword)
-    const error = useSelector(state => state.authData.resetFetchHasError)
+    const dispatch = useAppDispatch();
+    const [newPassword, setNewPassword] = React.useState<string>('')
+    const [resetCode, setResetCode] = React.useState<string>('')
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    const error = useAppSelector(state => state.authData.resetFetchHasError)
 
-    const confirmReset = useCallback(event => {
+    const confirmReset = useCallback((event: { preventDefault: () => void; }) => {
         event.preventDefault();
         if (newPassword.length && resetCode.length) {
             dispatch(passwordReset(newPassword, resetCode))

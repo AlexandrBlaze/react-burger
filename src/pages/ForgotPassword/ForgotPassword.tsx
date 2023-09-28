@@ -2,16 +2,16 @@ import styles from './ForgotPassword.module.css'
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {passwordRecovery} from "../../services/actions/authActions";
+import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
 
 
 export default function ForgotPassword() {
     const [value, setValue] = React.useState('');
-    const isResetPassword = useSelector(state => state.authData.isResetPassword)
-    const dispatch = useDispatch();
-    const navigate = useNavigate ();
-    const onChange = e => {
+    const isResetPassword = useAppSelector(state => state.authData.isResetPassword)
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
 
@@ -21,7 +21,7 @@ export default function ForgotPassword() {
         }
     }, [isResetPassword, navigate])
 
-    const forgotPass = (e) => {
+    const forgotPass = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(passwordRecovery(value))
     }

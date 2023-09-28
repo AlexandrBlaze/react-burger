@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import MainPage from "../../pages/MainPage/MainPage";
 import {AppHeader} from "../AppHeader/AppHeader";
 import Login from "../../pages/Login/Login";
@@ -62,7 +62,7 @@ function App() {
                             }/>
                         }/>
                     }/>
-                    <Route path="/profile" element={<OnlyAuth component={<Profile/>} />}/>
+                    <Route path="/profile" element={<OnlyAuth component={<Profile/>}/>}/>
                     <Route path="*" element={<NotFound404/>}/>
                 </Routes>
                 {background && (

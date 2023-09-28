@@ -1,9 +1,17 @@
-import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
 
-const Protected = ({ onlyUnAuth = false, component }) => {
-  const user = useSelector((store) => store.authData.user);
-  const isResetPassword = useSelector((store) => store.authData.isResetPassword);
+import { Navigate, useLocation } from "react-router-dom";
+import {useAppSelector} from "./hooks";
+import {ReactElement} from "react";
+
+interface IComponent {
+  component: ReactElement;
+}
+interface IProtected extends IComponent{
+  onlyUnAuth?: boolean,
+}
+const Protected = ({ onlyUnAuth = false, component}: IProtected) => {
+  const user = useAppSelector((store) => store.authData.user);
+  const isResetPassword = useAppSelector((store) => store.authData.isResetPassword);
   const location = useLocation();
 
   if (onlyUnAuth && user) {
@@ -21,6 +29,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 };
 
 export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth = ({ component }: IComponent) => (
   <Protected onlyUnAuth={true} component={component} />
 );

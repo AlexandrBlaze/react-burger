@@ -4,7 +4,6 @@ import {INGREDIENTS_TYPES} from "../BurgerIngredients/BurgerIngredients";
 import {Modal} from "../Modal/Modal";
 import React, {useCallback, useEffect, useMemo} from "react";
 import {OrderDetails} from "./modals/OrderDetails/OrderDetails";
-import {useDispatch, useSelector} from "react-redux";
 import {getCreateOrder, ORDER_MODAL_CLOSE} from "../../services/actions/createOrderActions";
 import {useDrop} from "react-dnd";
 import {
@@ -15,21 +14,19 @@ import {
 import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
 import {nanoid} from "nanoid";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../App/hooks";
+import {IIngredientItem} from "../../services/reducers/ingredientsReducer";
 
 export function BurgerConstructor() {
-
-    const [modalVisible, setVisible] = React.useState(false)
-    const [ingredients, setIngredients] = React.useState([])
-
-    const dispatch = useDispatch();
-    const constructorItems = useSelector(store => store.ingredientsConstructor.items);
-    const constructorBun = useSelector(store => store.ingredientsConstructor.bun);
-    const orderData = useSelector(state => state.orderInfo.orderData);
-    const orderLoader = useSelector(state => state.orderInfo.loader)
-    const orderError = useSelector(store => store.orderInfo.error);
-
-    const orderModalVisible = useSelector(state => state.orderInfo.orderModalVisible);
-    const isAuth = useSelector(state => state.authData.is_auth);
+    const [ingredients, setIngredients] = React.useState<IIngredientItem[]>([])
+    const dispatch = useAppDispatch();
+    const constructorItems = useAppSelector(store => store.ingredientsConstructor.items);
+    const constructorBun = useAppSelector(store => store.ingredientsConstructor.bun);
+    const orderData = useAppSelector(state => state.orderInfo.orderData);
+    const orderLoader = useAppSelector(state => state.orderInfo.loader)
+    const orderError = useAppSelector(store => store.orderInfo.error);
+    const orderModalVisible = useAppSelector(state => state.orderInfo.orderModalVisible);
+    const isAuth = useAppSelector(state => state.authData.is_auth);
     const navigate = useNavigate();
 
     const createOrder = useCallback(() => {
@@ -38,27 +35,23 @@ export function BurgerConstructor() {
             return
         }
         dispatch(getCreateOrder())
-        if (!orderLoader) {
-            setVisible(true);
-        }
-    }, [dispatch, orderLoader])
+    }, [dispatch, isAuth, navigate])
 
     useEffect(() => {
-        setIngredients(constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN))
+        return setIngredients(constructorItems.filter(item => item.type !== INGREDIENTS_TYPES.BUN));
     }, [constructorItems])
 
     // общая сумма
     const calculateCost = useMemo(() => {
-        let totalCost;
-        let totalCostIngredients = ingredients.reduce((acc, curr) => {
+        let totalCostIngredients = ingredients.reduce((acc, curr: IIngredientItem) => {
             return  acc + curr.price
         }, 0);
-        return totalCost = totalCostIngredients + ((constructorBun?.price || 0) * 2);
+        return totalCostIngredients + ((constructorBun?.price || 0) * 2);
     }, [ingredients, constructorBun])
 
     const [, dropTarget] = useDrop({
         accept: 'ingredients',
-        drop(item) {
+        drop(item: IIngredientItem) {
             if (item.type === 'bun') {
                 dispatch({
                     type: INGREDIENT_BUN_ITEM_ADD,
@@ -74,7 +67,7 @@ export function BurgerConstructor() {
     })
 
 
-    const deleteItem = (index) => {
+    const deleteItem = (index: number) => {
         dispatch(removeItem(index));
     }
 
@@ -101,7 +94,7 @@ export function BurgerConstructor() {
                     return (
                         <React.Fragment key={item.uniqueId} >
                             <BurgerConstructorItem index={index}
-                                                   item={item}
+                                                   ingredientItem={item}
                                                    deleteItem={deleteItem}/>
                         </React.Fragment>
                     )

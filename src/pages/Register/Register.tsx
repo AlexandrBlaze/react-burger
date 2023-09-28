@@ -1,29 +1,32 @@
 import styles from './Register.module.css'
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import {registerUser} from "../../services/actions/authActions";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../components/App/hooks";
 
 
 export default function Register() {
-    const dispatch = useDispatch();
-    const [name, setName] = React.useState('')
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const inputRef = React.useRef(null)
+    const dispatch = useAppDispatch();
+    const [name, setName] = React.useState<string>('')
+    const [email, setEmail] = React.useState<string>('')
+    const [password, setPassword] = React.useState<string>('')
+    const inputRef = React.useRef<HTMLInputElement>(null)
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus()
+            }
+        }, 0)
     }
 
-    const sendForm = useCallback(event => {
+    const sendForm = useCallback((event: { preventDefault: () => void; }) => {
         event.preventDefault();
         if (name && email && password) {
             dispatch(registerUser(name, email, password));
         }
         
-    },[email, name, password]);
+    },[dispatch, email, name, password]);
     return (
         <main className={styles.wrapper}>
             <form className={styles.form} onSubmit={(e) => sendForm(e)}>

@@ -3,20 +3,17 @@ import modalStyles from './Modal.module.css'
 import {createPortal} from "react-dom";
 import {ModalOverlay} from "./ModalOverlay/ModalOverlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useEffect} from "react";
-import PropTypes from "prop-types";
-import {hideInfoModal} from "../../services/actions/showInfoModalAction";
-import {useDispatch} from "react-redux";
+import {ReactElement, useCallback, useEffect} from "react";
+import React from 'react';
 
-
-const modalRoot = document.getElementById("burger-modals");
-Modal.propTypes = {
-    children: PropTypes.element,
-    modalTitle: PropTypes.string,
+interface IProps {
+    children: ReactElement,
+    modalTitle?: string,
+    toggleModal: () => void,
 }
-export function Modal({ children, modalTitle, toggleModal}){
-
-    const detectKeyDown = useCallback(event =>  {
+export const Modal = ({ children, modalTitle, toggleModal}: IProps) => {
+    const modalRoot:HTMLElement | null = document.getElementById("burger-modals");
+    const detectKeyDown = useCallback((event: { key: string; }) =>  {
         if (event.key === 'Escape') {
             toggleModal()
         }
@@ -28,10 +25,9 @@ export function Modal({ children, modalTitle, toggleModal}){
             document.removeEventListener('keydown', detectKeyDown)
         }
     }, [detectKeyDown]);
-
-    return(
+    return modalRoot ?
         createPortal(
-            <>
+            <React.Fragment>
                 <div className={modalStyles.modal}>
                     <div className={modalStyles.header}>
                         {modalTitle && <span className="text text_type_main-large">{modalTitle}</span>}
@@ -46,7 +42,9 @@ export function Modal({ children, modalTitle, toggleModal}){
                 </div>
 
                 <ModalOverlay onClose={toggleModal}/>
-            </>
-        , modalRoot)
-    );
+            </React.Fragment>
+            ,modalRoot)
+        : null
+
+
 }

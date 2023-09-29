@@ -3,7 +3,7 @@ import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-b
 import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import {signIn} from "../../services/actions/authActions";
-import {useAppDispatch} from "../../components/App/hooks";
+import {useAppDispatch} from "../../hooks";
 
 
 export default function Login() {
@@ -12,7 +12,7 @@ export default function Login() {
     const [password, setPassword] = React.useState<string>('')
 
 
-    const sendForm = useCallback((event: { preventDefault: () => void; }) => {
+    const sendForm:React.FormEventHandler<HTMLFormElement> = useCallback((event ) => {
         event.preventDefault();
         if (email && password) {
             dispatch(signIn(email, password));

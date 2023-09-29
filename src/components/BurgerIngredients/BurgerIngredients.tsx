@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css"
 import {IngredientsSection} from "./IngridientsSection/IngridientsSection";
-import {useAppSelector} from "../App/hooks";
+import {useAppSelector} from "../../hooks";
 
 
 export const INGREDIENTS_TYPES: Record<string, string> = {

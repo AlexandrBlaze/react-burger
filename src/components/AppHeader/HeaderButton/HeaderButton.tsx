@@ -1,8 +1,14 @@
 import appHeaderStyles from "./HeaderButton.module.css";
-import PropTypes from "prop-types";
-import {Link, NavLink} from "react-router-dom";
 
-export function HeaderButton({buttonText, children, classes, url = '/'}) {
+import {NavLink} from "react-router-dom";
+import {ReactElement} from "react";
+interface IProps {
+    children: ReactElement,
+    buttonText?: string,
+    classes?: string,
+    url: string,
+}
+export function HeaderButton({buttonText, children, classes, url = '/'}: IProps) {
 
     return (
         <NavLink  to={{ pathname: url }}
@@ -11,11 +17,4 @@ export function HeaderButton({buttonText, children, classes, url = '/'}) {
             <span className={appHeaderStyles.text}>{buttonText}</span>
         </NavLink>
     )
-}
-
-HeaderButton.propTypes = {
-    buttonText: PropTypes.string.isRequired,
-    children: PropTypes.element,
-    classes: PropTypes.string,
-    url: PropTypes.string
 }

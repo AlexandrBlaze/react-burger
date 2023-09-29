@@ -3,7 +3,7 @@ import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-deve
 import React, {useCallback, useEffect, useState} from "react";
 import {logout, updateUserData} from "../../services/actions/authActions";
 import styles from "../Profile/Profile.module.css";
-import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 export default function Profile() {
 
@@ -54,7 +54,7 @@ export default function Profile() {
 
     }
 
-    const saveForm = useCallback((event: { preventDefault: () => void; }) => {
+    const saveForm:React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
         event.preventDefault();
         dispatch(updateUserData(formValue.name, formValue.email, formValue.password))
     },[dispatch, formValue.email, formValue.name, formValue.password]);

@@ -3,7 +3,7 @@ import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-compon
 import React, {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {passwordRecovery} from "../../services/actions/authActions";
-import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 
 export default function ForgotPassword() {

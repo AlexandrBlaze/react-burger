@@ -2,6 +2,7 @@ import request from "../../utils/requestHelper";
 import {BASE_URL} from "../../ApiUlrs/apiUrls";
 import {AppThunk} from "../reducers/rootReducer";
 import {IUser} from "../reducers/authReducer";
+import checkResponse from "../../utils/checkResponse";
 export const AUTH_FETCH_START = 'AUTH_FETCH_START';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const AUTH_FETCH_COMPLETE = 'FETCH_COMPLETE';
@@ -48,7 +49,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     }
     try {
         dispatch({type: AUTH_FETCH_START})
-        request('auth/logout', {
+        await request('auth/logout', {
             method: 'POST',
             headers: {'Content-type': 'application/json; charset=UTF-8',},
             body: JSON.stringify(params)
@@ -113,14 +114,8 @@ export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
     }
 };
 
-
-
-const checkResponse = (res: Response) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
 export const refreshToken = (refresh: string) => {
-    return fetch(`${BASE_URL}/auth/token`, {
+    return request(`auth/token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -134,7 +129,7 @@ export const refreshToken = (refresh: string) => {
 export const fetchWithRefresh = async (url: string, options: RequestInit) => {
     const storedUser = JSON.parse(localStorage.getItem('tokens') || "{}");
     try {
-        const res = await fetch(url, options);
+        const res = await request(url, options);
         return await checkResponse(res);
     } catch (err: any) {
         if (err.message === "jwt expired") {
@@ -145,8 +140,8 @@ export const fetchWithRefresh = async (url: string, options: RequestInit) => {
             // обновляем полученные токены в localStorage
             saveTokenToLocalStorage(refreshData.accessToken, refreshData.refreshToken);
             options.headers = {...options.headers, authorization: refreshData.accessToken}
-            const res = await fetch(url, options); //повторяем запрос
-            return await checkResponse(res);
+            const res = await request(url, options); //повторяем запрос
+            return checkResponse(res);
         } else {
             return Promise.reject(err);
         }

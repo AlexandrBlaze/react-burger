@@ -3,7 +3,7 @@ import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-deve
 import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import {registerUser} from "../../services/actions/authActions";
-import {useAppDispatch} from "../../components/App/hooks";
+import {useAppDispatch} from "../../hooks";
 
 
 export default function Register() {
@@ -20,7 +20,7 @@ export default function Register() {
         }, 0)
     }
 
-    const sendForm = useCallback((event: { preventDefault: () => void; }) => {
+    const sendForm:React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
         event.preventDefault();
         if (name && email && password) {
             dispatch(registerUser(name, email, password));

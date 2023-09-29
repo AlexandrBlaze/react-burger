@@ -5,7 +5,7 @@ import {useDrag} from "react-dnd";
 import {showInfoModal} from "../../../services/actions/showInfoModalAction";
 import {Link, useLocation} from "react-router-dom";
 import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
-import {useAppDispatch, useAppSelector} from "../../App/hooks";
+import {useAppDispatch, useAppSelector} from "../../../hooks";
 
 export interface IModalParams {
     image: string,

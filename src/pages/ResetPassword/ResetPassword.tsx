@@ -3,7 +3,7 @@ import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger
 import React, {useCallback} from "react";
 import {Link} from "react-router-dom";
 import {passwordReset} from "../../services/actions/authActions";
-import {useAppDispatch, useAppSelector} from "../../components/App/hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 
 export default function ResetPassword() {
@@ -13,7 +13,7 @@ export default function ResetPassword() {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const error = useAppSelector(state => state.authData.resetFetchHasError)
 
-    const confirmReset = useCallback((event: { preventDefault: () => void; }) => {
+    const confirmReset:React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
         event.preventDefault();
         if (newPassword.length && resetCode.length) {
             dispatch(passwordReset(newPassword, resetCode))

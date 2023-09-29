@@ -1,7 +1,7 @@
 import ingredientDetailsStyles from './IngredientDetails.module.css'
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useAppSelector} from "../../../../App/hooks";
+import {useAppSelector} from "../../../../../hooks";
 import {IIngredientItem} from "../../../../../services/reducers/ingredientsReducer";
 
 export function IngredientDetails() {

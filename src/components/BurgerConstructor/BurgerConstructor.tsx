@@ -14,7 +14,7 @@ import {
 import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorItem";
 import {nanoid} from "nanoid";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../App/hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import {IIngredientItem} from "../../services/reducers/ingredientsReducer";
 
 export function BurgerConstructor() {

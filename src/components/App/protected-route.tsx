@@ -1,6 +1,6 @@
 
 import { Navigate, useLocation } from "react-router-dom";
-import {useAppSelector} from "./hooks";
+import {useAppSelector} from "../../hooks";
 import {ReactElement} from "react";
 
 interface IComponent {

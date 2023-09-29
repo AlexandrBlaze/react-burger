@@ -10,7 +10,7 @@ export const ORDER_MODAL_CLOSE = 'ORDER_MODAL_CLOSE'
 export const getCreateOrder= (): AppThunk => async (dispatch, getState) => {
     try {
         dispatch({type: ORDER_GET_REQUEST});
-        const orderIds: string[] = getState().ingredients.ingredientItems.map((item: IIngredientItem) => item._id);
+        const orderIds = getState().ingredients.ingredientItems.map((item: IIngredientItem) => item._id);
 
         const res = await request('orders', {
             method: 'POST',

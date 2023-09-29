@@ -17,7 +17,7 @@ import {IngredientDetails} from "../BurgerIngredients/IngredientCard/modals/Ingr
 import {hideInfoModal} from "../../services/actions/showInfoModalAction";
 import IngredientsDetails from "../../pages/IngredientsDetails/IngredientsDetails";
 import {getIngredientsData} from "../../services/actions/ingredientsActions";
-import {useAppDispatch, useAppSelector} from "./hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 
 function App() {

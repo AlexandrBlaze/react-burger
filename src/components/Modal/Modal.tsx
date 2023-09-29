@@ -13,7 +13,7 @@ interface IProps {
 }
 export const Modal = ({ children, modalTitle, toggleModal}: IProps) => {
     const modalRoot:HTMLElement | null = document.getElementById("burger-modals");
-    const detectKeyDown = useCallback((event: { key: string; }) =>  {
+    const detectKeyDown = useCallback((event: KeyboardEvent) =>  {
         if (event.key === 'Escape') {
             toggleModal()
         }

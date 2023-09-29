@@ -4,7 +4,7 @@ import {BurgerIngredients} from "../../components/BurgerIngredients/BurgerIngred
 import {BurgerConstructor} from "../../components/BurgerConstructor/BurgerConstructor";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import Loader from "../../components/Loader/Loader";
-import {useAppSelector} from "../../components/App/hooks";
+import {useAppSelector} from "../../hooks";
 
 function MainPage() {
     const error = useAppSelector(store =>  store.ingredients.error)

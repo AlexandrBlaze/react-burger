@@ -2,7 +2,7 @@ import request from "../../utils/requestHelper";
 import {BASE_URL} from "../../ApiUlrs/apiUrls";
 import {AppThunk} from "../reducers/rootReducer";
 import {IUser} from "../reducers/authReducer";
-import checkResponse from "../../utils/checkResponse";
+
 export const AUTH_FETCH_START = 'AUTH_FETCH_START';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const AUTH_FETCH_COMPLETE = 'FETCH_COMPLETE';
@@ -86,10 +86,10 @@ export const signIn = (email: string, password: string): AppThunk => async (disp
 }
 
 export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
-    const storedUser = JSON.parse(localStorage.getItem('tokens') || "{}");
-    if (storedUser?.refreshToken || storedUser?.accessToken) {
+    const storedUser: {refreshToken: string, accessToken: string} = JSON.parse(localStorage.getItem('tokens') || "{}");
+    if (storedUser.refreshToken || storedUser.accessToken) {
         dispatch({type: AUTH_FETCH_START});
-        const userData = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
+        const userData = await fetchWithRefresh(`auth/user`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -123,14 +123,13 @@ export const refreshToken = (refresh: string) => {
         body: JSON.stringify({
             token: refresh,
         }),
-    }).then(checkResponse);
+    })
 };
 
 export const fetchWithRefresh = async (url: string, options: RequestInit) => {
     const storedUser = JSON.parse(localStorage.getItem('tokens') || "{}");
     try {
-        const res = await request(url, options);
-        return await checkResponse(res);
+        return await request(url, options);
     } catch (err: any) {
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(storedUser.refreshToken); //обновляем токен
@@ -140,8 +139,7 @@ export const fetchWithRefresh = async (url: string, options: RequestInit) => {
             // обновляем полученные токены в localStorage
             saveTokenToLocalStorage(refreshData.accessToken, refreshData.refreshToken);
             options.headers = {...options.headers, authorization: refreshData.accessToken}
-            const res = await request(url, options); //повторяем запрос
-            return checkResponse(res);
+            return await request(url, options); //повторяем запрос
         } else {
             return Promise.reject(err);
         }

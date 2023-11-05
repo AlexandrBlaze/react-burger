@@ -1,0 +1,101 @@
+.orderCard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px;
+    margin-bottom: 16px;
+    border-radius: 40px;
+    background: #1C1C21;
+    /* /card/base */
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.04), 0 0 2px 0  rgba(0, 0, 0, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+    text-decoration: none;
+    color: #fff;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.date {
+    margin-bottom: 28px;
+    color: #8585AD;
+    font-size: 16px;
+}
+
+.title {
+    margin-bottom: 24px;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 125% */
+}
+.status {
+    margin-bottom: 24px;
+    font-family: JetBrains Mono;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}
+
+.created {
+    color: #0CC;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 15px;
+}
+
+.totalPrice {
+    display: flex;
+    align-items: center;
+}
+.totalPrice span {
+    margin-right: 10px;
+}
+.compound {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+.compoundItem {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    background: #131316;
+    border: 2px solid #801AB2;
+    border-radius: 50%;
+    margin-left: -15px;
+    overflow: hidden;
+}
+
+.compoundItem img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.moreItemsCounter {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(28,28,33,0.6);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+}

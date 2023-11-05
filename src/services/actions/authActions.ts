@@ -88,6 +88,10 @@ export const signIn = (email: string, password: string): AppThunk => async (disp
 export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
     const storedUser: {refreshToken: string, accessToken: string} = JSON.parse(localStorage.getItem('tokens') || "{}");
     if (storedUser.refreshToken || storedUser.accessToken) {
+        dispatch({type: UPDATE_TOKEN,  payload: {
+                accessToken: storedUser.accessToken,
+                refreshToken: storedUser.refreshToken,
+            }})
         dispatch({type: AUTH_FETCH_START});
         const userData = await fetchWithRefresh(`auth/user`, {
             method: 'GET',
@@ -96,6 +100,7 @@ export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
                 authorization: storedUser.accessToken
             },
         })
+
         dispatch({
             type: SET_USER_DATA,
             payload: {
@@ -111,6 +116,7 @@ export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
         dispatch({type: AUTH_FETCH_COMPLETE})
     } else {
         dispatch({type: USER_IS_NOT_IDENTIFIED})
+        dispatch({type: CLEAR_USER_DATA})
     }
 };
 
@@ -129,7 +135,7 @@ export const refreshToken = (refresh: string) => {
 export const fetchWithRefresh = async (url: string, options: RequestInit) => {
     const storedUser = JSON.parse(localStorage.getItem('tokens') || "{}");
     try {
-        return await request(url, options);
+        return  await request(url, options);
     } catch (err: any) {
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(storedUser.refreshToken); //обновляем токен

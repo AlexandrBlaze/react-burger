@@ -11,7 +11,7 @@ export function AppHeader() {
                     <HeaderButton buttonText='Конструктор' classes="mr-2" url={'/'}>
                         <BurgerIcon type="secondary" />
                     </HeaderButton>
-                    <HeaderButton buttonText='Лента заказов' url={'/history'}>
+                    <HeaderButton buttonText='Лента заказов' url={'/feed'}>
                         <ListIcon type="secondary" />
                     </HeaderButton>
                 </nav>

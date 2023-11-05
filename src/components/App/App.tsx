@@ -18,6 +18,11 @@ import {hideInfoModal} from "../../services/actions/showInfoModalAction";
 import IngredientsDetails from "../../pages/IngredientsDetails/IngredientsDetails";
 import {getIngredientsData} from "../../services/actions/ingredientsActions";
 import {useAppDispatch, useAppSelector} from "../../hooks";
+import FeedPage from "../../pages/Feed/FeedPage";
+import ProfileUserForm from "../ProfileUserForm/ProfileUserForm";
+import ProfileOrders from "../ProfileOrders/ProfileOrders";
+import DetailedOrderCard from "../DetailedOrderCard/DetailedOrderCard";
+import OrderDetailPage from "../../pages/IngredientsDetails/IngredientsDetails";
 
 
 function App() {
@@ -46,15 +51,11 @@ function App() {
                 <AppHeader/>
                 <Routes location={background || location}>
                     <Route path="/" element={<MainPage/>}/>
+                    <Route path="/feed" element={<FeedPage/>}/>
                     <Route path="/login" element={<OnlyUnAuth component={<Login/>}/>}/>
                     <Route path="/register" element={<OnlyUnAuth component={<Register/>}/>}/>
-                    <Route path='/ingredients/:ingredientId'
-                           element={<IngredientsDetails />} />
-                    <Route path="/forgot-password" element={
-                        <OnlyUnAuth component={
-                            <ForgotPassword />
-                        }/>
-                    }/>
+                    <Route path='/ingredients/:ingredientId' element={<IngredientsDetails />} />
+                    <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />}/>}/>
                     <Route path="/reset-password" element={
                         <OnlyUnAuth component={
                             <ProtectedResetRoute component={
@@ -62,7 +63,12 @@ function App() {
                             }/>
                         }/>
                     }/>
-                    <Route path="/profile" element={<OnlyAuth component={<Profile/>}/>}/>
+                    <Route path="/profile" element={<OnlyAuth component={<Profile/>}/>}>
+                        <Route path="" element={<ProfileUserForm />} />
+                        <Route path="orders" element={<ProfileOrders />} />
+                    </Route>
+                    <Route path="/feed/:number" element={<OrderDetailPage/>}/>
+                    <Route path="/profile/orders/:number" element={<OnlyAuth component={<OrderDetailPage/>}/>}/>
                     <Route path="*" element={<NotFound404/>}/>
                 </Routes>
                 {background && (
@@ -73,6 +79,24 @@ function App() {
                                 <Modal toggleModal={closeModal} modalTitle={'Детали ингредиента'}>
                                     <IngredientDetails/>
                                 </Modal>
+                            }
+                        />
+                        <Route
+                            path="/feed/:number"
+                            element={
+                                <Modal toggleModal={closeModal}>
+                                    <DetailedOrderCard/>
+                                </Modal>
+                            }
+                        />
+                        <Route
+                            path="/profile/orders/:number"
+                            element={
+                            <OnlyAuth component={
+                                <Modal toggleModal={closeModal}>
+                                    <DetailedOrderCard/>
+                                </Modal>
+                            }/>
                             }
                         />
                     </Routes>

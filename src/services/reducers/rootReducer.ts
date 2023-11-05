@@ -8,24 +8,21 @@ import createOrderReducer from "./сreateOrderReducer";
 import burgerConstructorReducer from "./burgerConstructorReducer";
 import authReducer from "./authReducer";
 import {
-    socketMiddleware,
-} from "../middleware/socketMiddleware";
-import feedReducer from "./feedReducer";
+    ORDER_WS_CONNECTION_CLOSED, ORDER_WS_CONNECTION_ERROR,
+    ORDER_WS_CONNECTION_START,
+    ORDER_WS_CONNECTION_SUCCESS, ORDER_WS_GET_MESSAGE,
+    ORDER_WS_SEND_MESSAGE
+} from "../actions/orderWsActions";
 import {
-    FEED_WS_CONNECTION_CLOSED,
-    FEED_WS_CONNECTION_ERROR,
+    FEED_WS_CONNECTION_CLOSED, FEED_WS_CONNECTION_ERROR,
     FEED_WS_CONNECTION_START,
     FEED_WS_CONNECTION_SUCCESS, FEED_WS_GET_MESSAGE,
     FEED_WS_SEND_MESSAGE
 } from "../actions/feedWsActions";
-import {
-    ORDER_WS_CONNECTION_CLOSED,
-    ORDER_WS_CONNECTION_ERROR, ORDER_WS_CONNECTION_START,
-    ORDER_WS_CONNECTION_SUCCESS, ORDER_WS_GET_MESSAGE,
-    ORDER_WS_SEND_MESSAGE
-} from "../actions/orderWsActions";
+import feedReducer from "./feedReducer";
 import userOrdersReducer from "./userOrdersReducer";
 import detailedOrderCardReducer from "./detailedOrderCardReducer";
+import {socketMiddleware} from "../middleware/socketMiddleware";
 
 
 declare global {

@@ -50,10 +50,11 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
                 onError,
                 onMessage
             } = wsActions;
+
             const token = getState().authData.accessToken;
 
             const wordToDelete = "Bearer ";
-            const clearedToken = token.replace(new RegExp(wordToDelete, "g"), "");
+            const clearedToken = token.includes(token) ? token.replace(new RegExp(wordToDelete, "g"), "") : token;
             url = `${action.payload}?token=${clearedToken}`;
 
             if (type === wsInit && token) {

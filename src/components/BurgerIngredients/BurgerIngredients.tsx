@@ -128,7 +128,7 @@ export function BurgerIngredients() {
                     Начинки
                 </Tab>
             </nav>
-            <div className={burgerIngredientsStyles.ingredients} ref={scrollContainerRef}>
+            <div className={burgerIngredientsStyles.ingredients} ref={scrollContainerRef} >
                 <IngredientsSection ref={bunRef} sectionItems={bunItems} name={'Булки'} />
                 <IngredientsSection ref={sauceRef} sectionItems={sauceItems} name={'Соусы'}/>
                 <IngredientsSection ref={mainRef} sectionItems={mainItems} name={'Начинка'}/>

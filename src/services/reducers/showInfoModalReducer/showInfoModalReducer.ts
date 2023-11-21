@@ -1,5 +1,5 @@
-import {CLOSE_INFO_MODAL, OPEN_INFO_MODAL} from "../actions/showInfoModalAction";
-import {IIngredientItem} from "./ingredientsReducer";
+import {CLOSE_INFO_MODAL, OPEN_INFO_MODAL} from "../../actions/showInfoModalAction";
+import {IIngredientItem} from "../ingredientsReducer/ingredientsReducer";
 
 interface IShowModalInfoState {
     modalData: IIngredientItem | null,

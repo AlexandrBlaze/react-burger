@@ -1,12 +1,12 @@
 import {combineReducers, Action } from "redux";
 import {createStore, applyMiddleware} from "redux";
-import ingredientsReducer from "./ingredientsReducer";
+import ingredientsReducer from "./ingredientsReducer/ingredientsReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {showInfoModalReducer} from "./showInfoModalReducer";
-import createOrderReducer from "./сreateOrderReducer";
-import burgerConstructorReducer from "./burgerConstructorReducer";
-import authReducer from "./authReducer";
+import {showInfoModalReducer} from "./showInfoModalReducer/showInfoModalReducer";
+import createOrderReducer from "./сreateOrderReducer/сreateOrderReducer";
+import burgerConstructorReducer from "./burgerCounstructorReducer/burgerConstructorReducer";
+import authReducer from "./authReducer/authReducer";
 import {
     ORDER_WS_CONNECTION_CLOSED, ORDER_WS_CONNECTION_ERROR,
     ORDER_WS_CONNECTION_START,
@@ -19,9 +19,9 @@ import {
     FEED_WS_CONNECTION_SUCCESS, FEED_WS_GET_MESSAGE,
     FEED_WS_SEND_MESSAGE
 } from "../actions/feedWsActions";
-import feedReducer from "./feedReducer";
-import userOrdersReducer from "./userOrdersReducer";
-import detailedOrderCardReducer from "./detailedOrderCardReducer";
+import feedReducer from "./feedReducer/feedReducer";
+import userOrdersReducer from "./userOrdersReducer/userOrdersReducer";
+import detailedOrderCardReducer from "./detailedOrderCardReducer/detailedOrderCardReducer";
 import {socketMiddleware} from "../middleware/socketMiddleware";
 
 

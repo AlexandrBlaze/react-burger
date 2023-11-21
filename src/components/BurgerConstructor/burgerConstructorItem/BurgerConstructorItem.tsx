@@ -4,8 +4,8 @@ import burgerConstructorItemStyles from './BurgerConstructorItem.module.css';
 import { XYCoord } from 'dnd-core';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import {moveCard} from "../../../services/actions/burgerConstructorActions";
-import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
 import {useAppDispatch} from "../../../hooks";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 interface IDragItem {
     ingredientItem: IIngredientItem,

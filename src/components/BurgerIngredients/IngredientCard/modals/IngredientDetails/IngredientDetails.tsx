@@ -2,7 +2,7 @@ import ingredientDetailsStyles from './IngredientDetails.module.css'
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAppSelector} from "../../../../../hooks";
-import {IIngredientItem} from "../../../../../services/reducers/ingredientsReducer";
+import {IIngredientItem} from "../../../../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 export function IngredientDetails() {
     const { ingredientId } = useParams();

@@ -3,7 +3,7 @@ import {
     ORDER_GET_REQUEST,
     ORDER_MODAL_CLOSE,
     ORDER_SUCCESS_REQUEST
-} from "../actions/createOrderActions";
+} from "../../actions/createOrderActions";
 
 interface IOrderData {
     orderNumber: string,

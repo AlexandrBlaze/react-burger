@@ -1,7 +1,7 @@
 import {
 
-} from "../middleware/socketMiddleware";
-import {FEED_WS_CONNECTION_CLOSED, FEED_WS_CONNECTION_ERROR, FEED_WS_CONNECTION_SUCCESS, FEED_WS_GET_MESSAGE} from "../actions/feedWsActions";
+} from "../../middleware/socketMiddleware";
+import {FEED_WS_CONNECTION_CLOSED, FEED_WS_CONNECTION_ERROR, FEED_WS_CONNECTION_SUCCESS, FEED_WS_GET_MESSAGE} from "../../actions/feedWsActions";
 
 interface IDefaultState {
     orders: IFeedItem[];

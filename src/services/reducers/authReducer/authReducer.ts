@@ -9,7 +9,7 @@ import {
     UPDATE_USER_DATA,
     USER_IS_AUTH,
     USER_IS_NOT_IDENTIFIED
-} from "../actions/authActions";
+} from "../../actions/authActions";
 
 export interface IUser {
     name: string,

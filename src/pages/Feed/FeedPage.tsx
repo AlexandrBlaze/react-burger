@@ -4,7 +4,7 @@ import {useEffect, useMemo} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {FEED_WS_CONNECTION_CLOSED, FEED_WS_CONNECTION_START} from "../../services/actions/feedWsActions";
 import {FEED_WS_URL} from "../../ApiUlrs/apiUrls";
-import {IFeedItem} from "../../services/reducers/feedReducer";
+import {IFeedItem} from "../../services/reducers/feedReducer/feedReducer";
 
 export default function FeedPage() {
     const orders = useAppSelector(state => state.feedData.orders)

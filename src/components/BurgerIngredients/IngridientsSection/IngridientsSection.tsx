@@ -1,7 +1,7 @@
 import ingredientSectionStyles from './IngridientsSection.module.css'
 import {IngredientCard} from "../IngredientCard/IngredientCard";
 import {forwardRef} from "react";
-import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 
 interface Props {

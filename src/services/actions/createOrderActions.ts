@@ -1,6 +1,5 @@
 import request from "../../utils/requestHelper";
 import {AppThunk} from "../reducers/rootReducer";
-import {IIngredientItem} from "../reducers/ingredientsReducer";
 import {CLEAR_USER_DATA, USER_IS_NOT_IDENTIFIED} from "./authActions";
 
 export const ORDER_GET_REQUEST = 'ORDER_GET_REQUEST'

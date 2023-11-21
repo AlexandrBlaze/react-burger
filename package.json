@@ -11,6 +11,8 @@
     "@types/react-dom": "^18.2.7",
     "@types/react-redux": "^7.1.26",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
+    "effector": "^22.8.6",
+    "effector-react": "^22.5.3",
     "nanoid": "^4.0.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

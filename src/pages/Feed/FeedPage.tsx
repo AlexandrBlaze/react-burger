@@ -21,7 +21,7 @@ export default function FeedPage() {
     }, [orders]);
 
     useEffect(() => {
-        dispatch({type: FEED_WS_CONNECTION_START, payload: FEED_WS_URL })
+        dispatch({type: FEED_WS_CONNECTION_START, url: FEED_WS_URL, order_type: 'feed' })
         return() => {
             dispatch({type: FEED_WS_CONNECTION_CLOSED})
         }

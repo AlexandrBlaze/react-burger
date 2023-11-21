@@ -54,10 +54,11 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
             const token = getState().authData.accessToken;
 
             const wordToDelete = "Bearer ";
-            const clearedToken = token.includes(token) ? token.replace(new RegExp(wordToDelete, "g"), "") : token;
-            url = `${action.payload}?token=${clearedToken}`;
+            const clearedToken = token.replace(new RegExp(wordToDelete, "g"), "");
 
-            if (type === wsInit && token) {
+            url = `${action.url}${action.order_type !== 'feed' ? '?token=' + clearedToken : ''  }`;
+
+            if (type === wsInit) {
                 socket = new WebSocket(url);
                 console.log('connect')
             }

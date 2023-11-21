@@ -14,7 +14,7 @@ export  default function ProfileOrders() {
 
     useEffect(() => {
         if (userIsAuth) {
-            dispatch({type: ORDER_WS_CONNECTION_START, payload: ORDER_WS_URL })
+            dispatch({type: ORDER_WS_CONNECTION_START, url: ORDER_WS_URL })
         }
         return() => {
             dispatch({type: ORDER_WS_CONNECTION_CLOSED})

@@ -1,4 +1,5 @@
-describe('The Home Page', () => {
+describe('Test Home Page', () => {
+
   beforeEach(() => {
     cy.visit('/')
     cy.intercept("POST", "api/orders", { fixture: "order.json" }).as("postOrder");
@@ -17,6 +18,8 @@ describe('The Home Page', () => {
     );
     cy.setCookie('accessToken', 'test-accessToken')
   });
+
+
 
   it("create order", function () {
     cy.get("@orderSubmit").click();
@@ -42,4 +45,12 @@ describe('The Home Page', () => {
         "postOrder"
     );
   });
+
+  it('should open ingredient info modal', function () {
+    cy.get('@main').click(); // открываем модалку
+    cy.get('[data-cy="modal-ingredient-name"').should('be.visible'); // проверяем контент в модалке
+    cy.wait(2000); // для просмотра
+    cy.get('[data-cy="close-modal-button"]').click(); // закрываем
+  });
+
 })

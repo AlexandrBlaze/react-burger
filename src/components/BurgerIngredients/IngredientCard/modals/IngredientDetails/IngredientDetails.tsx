@@ -22,7 +22,7 @@ export function IngredientDetails() {
             {ingredient &&
                 <section className={ingredientDetailsStyles.card}>
                     <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt={ingredient.name}/>
-                    <div className={`${ingredientDetailsStyles.name} text text_type_main-medium`}>{ingredient.name}</div>
+                    <div className={`${ingredientDetailsStyles.name} text text_type_main-medium`}  data-cy="modal-ingredient-name">{ingredient.name}</div>
                     <div className={ingredientDetailsStyles.params}>
                         <div className={ingredientDetailsStyles.param}>
                             <div className={`${ingredientDetailsStyles.paramName} text text_type_main-default text_color_inactive`}>Калории,ккал</div>

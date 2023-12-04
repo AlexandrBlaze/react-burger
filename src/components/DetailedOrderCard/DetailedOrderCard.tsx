@@ -4,9 +4,8 @@ import React, {useEffect, useMemo} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {GET_ORDER_BY_ID_RESET, getOrderById} from "../../services/actions/detailedOrderCardActions";
 import Loader from "../Loader/Loader";
-import {IIngredientItem} from "../../services/reducers/ingredientsReducer";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IFeedItem} from "../../services/reducers/feedReducer";
+import {IIngredientItem} from "../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 
 export default function DetailedOrderCard() {

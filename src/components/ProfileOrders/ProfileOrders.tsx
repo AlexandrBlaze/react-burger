@@ -2,8 +2,8 @@ import {useEffect} from "react";
 import {ORDER_WS_URL} from "../../ApiUlrs/apiUrls";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {ORDER_WS_CONNECTION_CLOSED, ORDER_WS_CONNECTION_START} from "../../services/actions/orderWsActions";
-import {IFeedItem} from "../../services/reducers/feedReducer";
 import {OrderCard} from "../../pages/Feed/OrderCard/OrderCard";
+import {IFeedItem} from "../../services/reducers/feedReducer/feedReducer";
 
 
 export  default function ProfileOrders() {
@@ -14,7 +14,7 @@ export  default function ProfileOrders() {
 
     useEffect(() => {
         if (userIsAuth) {
-            dispatch({type: ORDER_WS_CONNECTION_START, payload: ORDER_WS_URL })
+            dispatch({type: ORDER_WS_CONNECTION_START, url: ORDER_WS_URL })
         }
         return() => {
             dispatch({type: ORDER_WS_CONNECTION_CLOSED})

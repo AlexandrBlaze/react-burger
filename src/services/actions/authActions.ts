@@ -1,7 +1,7 @@
 import request from "../../utils/requestHelper";
 import {BASE_URL} from "../../ApiUlrs/apiUrls";
 import {AppThunk} from "../reducers/rootReducer";
-import {IUser} from "../reducers/authReducer";
+import {IUser} from "../reducers/authReducer/authReducer";
 
 export const AUTH_FETCH_START = 'AUTH_FETCH_START';
 export const SET_USER_DATA = 'SET_USER_DATA';

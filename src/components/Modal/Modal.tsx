@@ -32,7 +32,7 @@ export const Modal = ({ children, modalTitle, toggleModal}: IProps) => {
                     <div className={modalStyles.header}>
                         {modalTitle && <span className="text text_type_main-large">{modalTitle}</span>}
                         <button onClick={toggleModal}
-                                className={modalStyles.closeButton}>
+                                className={modalStyles.closeButton} data-cy="close-modal-button">
                             <CloseIcon type="primary" />
                         </button>
                     </div>

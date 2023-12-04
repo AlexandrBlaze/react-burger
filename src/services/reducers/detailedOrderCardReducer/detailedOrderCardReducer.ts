@@ -2,13 +2,9 @@ import {
     GET_ORDER_BY_ID_ERROR,
     GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_RESET,
     GET_ORDER_BY_ID_SUCCESS
-} from "../actions/detailedOrderCardActions";
-import {
-    FEED_WS_CONNECTION_CLOSED,
-    FEED_WS_CONNECTION_ERROR,
-    FEED_WS_CONNECTION_SUCCESS
-} from "../actions/feedWsActions";
-import {IFeedItem} from "./feedReducer";
+} from "../../actions/detailedOrderCardActions";
+
+import {IFeedItem} from "../feedReducer/feedReducer";
 interface IOrderItem {
     _id?: string;
     ingredients?: Array<string>;

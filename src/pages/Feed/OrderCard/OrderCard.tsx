@@ -1,9 +1,9 @@
 import orderCardStyles from './OrderCard.module.css';
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useAppSelector} from "../../../hooks";
-import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
-import {IFeedItem} from "../../../services/reducers/feedReducer";
 import {Link, useLocation} from "react-router-dom";
+import {IFeedItem} from "../../../services/reducers/feedReducer/feedReducer";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 const statusTypes= {
     done: 'Создан',

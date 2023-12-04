@@ -4,8 +4,8 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {useDrag} from "react-dnd";
 import {showInfoModal} from "../../../services/actions/showInfoModalAction";
 import {Link, useLocation} from "react-router-dom";
-import {IIngredientItem} from "../../../services/reducers/ingredientsReducer";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
+import {IIngredientItem} from "../../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 export interface IModalParams {
     image: string,

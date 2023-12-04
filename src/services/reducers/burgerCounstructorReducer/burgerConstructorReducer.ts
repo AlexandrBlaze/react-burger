@@ -3,8 +3,8 @@ import {
     INGREDIENT_ITEM_ADD,
     INGREDIENT_ITEM_MOVED,
     INGREDIENT_ITEM_REMOVE
-} from "../actions/burgerConstructorActions";
-import {IIngredientItem} from "./ingredientsReducer";
+} from "../../actions/burgerConstructorActions";
+import {IIngredientItem} from "../ingredientsReducer/ingredientsReducer";
 
 interface IBurgerConstructorState {
     items: IIngredientItem[],

@@ -2,7 +2,7 @@ import {
     INGREDIENTS_ERROR_REQUEST,
     INGREDIENTS_GET_REQUEST,
     INGREDIENTS_SUCCESS_REQUEST
-} from "../actions/ingredientsActions";
+} from "../../actions/ingredientsActions";
 
 export interface IIngredientItem {
     count: number;

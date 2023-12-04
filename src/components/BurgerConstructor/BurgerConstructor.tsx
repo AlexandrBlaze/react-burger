@@ -15,7 +15,7 @@ import {BurgerConstructorItem} from "./burgerConstructorItem/BurgerConstructorIt
 import {nanoid} from "nanoid";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {IIngredientItem} from "../../services/reducers/ingredientsReducer";
+import {IIngredientItem} from "../../services/reducers/ingredientsReducer/ingredientsReducer";
 
 export function BurgerConstructor() {
     const [ingredients, setIngredients] = React.useState<IIngredientItem[]>([])
@@ -76,7 +76,7 @@ export function BurgerConstructor() {
     }
 
     return (
-        <section className={burgerConstructorStyles.wrapper} ref={dropTarget}>
+        <section className={burgerConstructorStyles.wrapper} ref={dropTarget} data-cy="dropContainer">
             { constructorBun &&
             <div className={`${burgerConstructorStyles.item} pl-8 mb-4`}>
                 <ConstructorElement
@@ -119,7 +119,7 @@ export function BurgerConstructor() {
                     <span className="text text_type_digits-medium mr-1">{calculateCost}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button onClick={createOrder} htmlType="button" type="primary" size="large">
+                <Button onClick={createOrder} htmlType="button" type="primary" size="large" data-cy="orderSubmit">
                     {orderLoader && <span>Загрузка</span>}
                     {orderError && <span>Ошибка</span>}
                     {(!orderLoader && !orderError) && <span> Оформить заказ</span>}

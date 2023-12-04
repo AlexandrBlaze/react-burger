@@ -1,13 +1,13 @@
 import {
 
-} from "../middleware/socketMiddleware";
+} from "../../middleware/socketMiddleware";
 
 import {
     ORDER_WS_CONNECTION_CLOSED,
     ORDER_WS_CONNECTION_ERROR,
     ORDER_WS_CONNECTION_SUCCESS, ORDER_WS_GET_MESSAGE
-} from "../actions/orderWsActions";
-import {IFeedItem} from "./feedReducer";
+} from "../../actions/orderWsActions";
+import {IFeedItem} from "../feedReducer/feedReducer";
 
 interface IDefaultState {
     orders: IFeedItem[];

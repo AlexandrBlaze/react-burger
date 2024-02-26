@@ -67,5 +67,5 @@
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4"
   },
-  "homepage": "/"
+  "homepage": "./"
 }

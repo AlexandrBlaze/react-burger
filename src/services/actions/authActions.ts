@@ -86,6 +86,7 @@ export const signIn = (email: string, password: string): AppThunk => async (disp
 }
 
 export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
+    debugger
     const storedUser: {refreshToken: string, accessToken: string} = JSON.parse(localStorage.getItem('tokens') || "{}");
     if (storedUser.refreshToken || storedUser.accessToken) {
         dispatch({type: UPDATE_TOKEN,  payload: {
@@ -115,6 +116,7 @@ export const checkUserAuth = (): AppThunk => async (dispatch) =>  {
         dispatch({type: USER_IS_AUTH})
         dispatch({type: AUTH_FETCH_COMPLETE})
     } else {
+        localStorage.removeItem("tokens");
         dispatch({type: USER_IS_NOT_IDENTIFIED})
         dispatch({type: CLEAR_USER_DATA})
     }
